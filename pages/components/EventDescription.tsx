@@ -22,7 +22,7 @@ export const EventDescription: FC = () => {
 
       <p>* Places are limited, so grab your spot fast!</p>
       <p>** You must provide a negative RAT result and be vaccinated three times in order to enter the venue. Failure to present a vaccination record will result in being denied entry and no refund will be provided.</p>
-      <p>*** Walk-in starts from 7:00pm. For those who registered online, we cannot guarantee your spot after 7:00 pm as places are limited.</p>
+      <p>*** Walk-in starts from 6:00pm. For those who <b>registered online</b>, we <b>cannot guarantee your spot after 6:00 pm</b> as places are limited.</p>
     </div>
   );
 }
