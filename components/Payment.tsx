@@ -1,6 +1,6 @@
 import { FC, useMemo, useState } from 'react'
-import { paymentMethods } from '../../constants';
-import { IOrder } from '../../global';
+import { paymentMethods } from '../constants';
+import { IOrder } from '../global';
 import { ProofOfPaymentUpload } from './ProofOfPaymentUpload';
 import { SelectedMethodInfo } from './SelectedMethodInfo';
 

@@ -1,12 +1,12 @@
 import { useRouter } from "next/router";
 import { FC, useCallback, FormEventHandler } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { IEventForm, IOrder } from "../../global";
+import { IEventForm, IOrder } from "../global";
 import { ExternalLink } from "./ExternalLink";
 import { TextInput } from "./TextInput";
 import validator from 'validator';
 import { useMutation } from "@tanstack/react-query";
-import { updateOrder } from "../../utils/order";
+import { updateOrder } from "../utils/order";
 import { Button } from "./Button";
 import axios from "axios";
 

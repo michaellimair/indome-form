@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import { FC } from "react";
-import { createOrder } from "../../utils/order";
+import { createOrder } from "../utils/order";
 import { Button } from "./Button";
 
 export const CreateOrderSection: FC = () => {

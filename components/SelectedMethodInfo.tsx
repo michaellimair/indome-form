@@ -1,5 +1,5 @@
 import { FC, useMemo } from "react";
-import { AccountInfo, AccountInfoType, PaymentMethod } from "../../constants";
+import { AccountInfo, AccountInfoType, PaymentMethod } from "../constants";
 import { ExternalLink } from "./ExternalLink";
 
 const getLabelByAccountInfoType = (type: AccountInfoType) => {

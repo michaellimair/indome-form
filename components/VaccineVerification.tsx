@@ -5,7 +5,7 @@ import { Button } from './Button';
 import jsQR from 'jsqr';
 import axios from 'axios';
 import { useRouter } from 'next/router';
-import { VacCase, VerifyVaccineResult } from '../../customTypes';
+import { VacCase, VerifyVaccineResult } from '../customTypes';
 import { FileUpload } from './FileUpload';
 
 function convertURIToImageData(uri: string) {

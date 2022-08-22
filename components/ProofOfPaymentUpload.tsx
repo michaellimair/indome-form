@@ -3,7 +3,7 @@ import { Button } from './Button';
 import { useRouter } from 'next/router';
 import { FC, useCallback, useMemo, useState } from 'react';
 import { FileUpload } from './FileUpload';
-import { PaymentMethod } from '../../constants';
+import { PaymentMethod } from '../constants';
 
 export const ProofOfPaymentUpload: FC<{ selectedMethod: PaymentMethod }> = ({
   selectedMethod,
