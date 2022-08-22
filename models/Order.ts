@@ -5,11 +5,9 @@ const OrderSchema = new mongoose.Schema<IOrder>({
   name: String,
   email: {
     type: String,
-    unique: true,
   },
   phone: {
     type: String,
-    unique: true,
   },
   filled: {
     type: Boolean,
