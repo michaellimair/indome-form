@@ -1,6 +1,7 @@
 import { FC, useMemo, useState } from 'react'
 import { paymentMethods } from '../constants';
 import { IOrder } from '../global';
+import { CancelOrderSection } from './CancelOrderSection';
 import { ProofOfPaymentUpload } from './ProofOfPaymentUpload';
 import { SelectedMethodInfo } from './SelectedMethodInfo';
 
@@ -33,6 +34,7 @@ const Payment: FC<{ order: IOrder }> = ({
       {!!selectedMethod && (
         <ProofOfPaymentUpload selectedMethod={selectedMethod} />
       )}
+      <CancelOrderSection orderId={order._id} />
     </div>
   )
 }
