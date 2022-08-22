@@ -30,5 +30,5 @@ Deploy it to the cloud with [Vercel](https://vercel.com/new?utm_source=github&ut
 
 ```
 gcloud builds submit --tag gcr.io/$PROJECT_ID/$SERVICENAME --project $PROJECT_ID
-gcloud run deploy --image gcr.io/$PROJECT_ID/$SERVICENAME --project $PROJECT_ID --platform managed --region $REGION
+gcloud run deploy --image gcr.io/$PROJECT_ID/$SERVICENAME --project $PROJECT_ID --platform managed --region $REGION --set-secrets=INDOME_DB_NAME=INDOME_DB_NAME:latest,INDOME_MONGODB_URI=INDOME_MONGODB_URI:latest,INDOME_GCP_BUCKET=INDOME_GCP_BUCKET:latest
 ```
