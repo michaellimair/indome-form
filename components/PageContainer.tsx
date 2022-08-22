@@ -12,7 +12,7 @@ export const PageContainer: FC<any> = ({ children }) => (
       <img
         src="/roofrave-banner.png"
         height={200}
-        className="w-full max-w-4xl"
+        className="w-full max-w-7xl"
         alt="InDome Roof Rave 2022"
       />
       <div className="w-full px-8 max-w-7xl">
