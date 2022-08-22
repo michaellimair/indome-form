@@ -1,24 +1,11 @@
 import { Fields, Files, IncomingForm } from 'formidable'
 import { NextApiRequest, NextApiResponse } from 'next';
 import Order from '../../../../models/Order';
-import { Storage } from '@google-cloud/storage';
 import { isAfter } from 'date-fns';
 import { v4 as uuidv4 } from 'uuid';
 import mime from 'mime';
 import dbConnect from '../../../../utils/dbConnect';
-
-const serviceAccount = process.env.INDOME_GCP_SERVICE_ACCOUNT!;
-const bucketName = process.env.INDOME_GCP_BUCKET!;
-
-const storage = new Storage(serviceAccount ? {
-  credentials: JSON.parse(serviceAccount),
-} : {});
-
-if (!bucketName) {
-  throw new Error('Please configure the bucket name setting!');
-}
-
-const bucket = storage.bucket(bucketName);
+import { indomeBucket } from '../../../../utils/storage';
 
 export const config = {
   api: {
@@ -83,7 +70,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       const file = Array.isArray(fileObj) ? fileObj[0] : fileObj;
     
       const baseName = `${uuidv4()}.${mime.getExtension(file.mimetype!)}`;
-      await bucket.upload(file.filepath!, {
+      await indomeBucket.upload(file.filepath!, {
         destination: baseName,
       });
     

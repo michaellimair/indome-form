@@ -3,6 +3,7 @@ import Order from '../../../../models/Order';
 import dbConnect from '../../../../utils/dbConnect';
 import { addMinutes } from 'date-fns';
 import { timingSafeEqual } from 'crypto';
+import { indomeBucket } from '../../../../utils/storage';
 
 const adminSecret = process.env.INDOME_ADMIN_SECRET!;
 
@@ -34,5 +35,18 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   await dbConnect();
   const orders = await Order.find({ filled: true });
 
-  res.status(200).json(orders);
+  const ordersWithImage = await Promise.all(
+    orders.map(async (order) => {
+      return ({
+        ...order.toJSON(),
+        paymentProofUrl: await indomeBucket.file(order.paymentProofFileName).getSignedUrl({
+          expires: addMinutes(new Date(), 5),
+          version: 'v4',
+          action: 'read'
+        }).then((result) => result[0])
+      })
+    })
+  )
+
+  res.status(200).json(ordersWithImage);
 }
