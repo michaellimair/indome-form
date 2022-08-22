@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import type { NextPage } from 'next'
 import { useRouter } from 'next/router';
-import { EventDescription } from '../../../components/EventDescription';
+import { Countdown } from '../../../components/Countdown';
 import { EventForm } from '../../../components/EventForm';
 import { PageContainer } from '../../../components/PageContainer';
 import { IOrder } from '../../../global';
@@ -15,7 +15,12 @@ const OrderForm: NextPage = () => {
   
   return (
     <PageContainer>
-      <EventForm />
+      {order && (
+        <>
+          <Countdown order={order} />
+          <EventForm />
+        </>
+      )}
     </PageContainer>
   )
 }

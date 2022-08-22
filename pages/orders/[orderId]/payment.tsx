@@ -5,6 +5,7 @@ import { useRouter } from 'next/router'
 import { IOrder } from '../../../global'
 import { PageContainer } from '../../../components/PageContainer'
 import Payment from '../../../components/Payment'
+import { Countdown } from '../../../components/Countdown'
 
 const PaymentPage: NextPage = () => {
   const router = useRouter();
@@ -14,7 +15,12 @@ const PaymentPage: NextPage = () => {
 
   return (
     <PageContainer>
-      {!!order && <Payment order={order} />}
+      {!!order  && (
+        <>
+          <Countdown order={order} />
+          <Payment order={order} />
+        </>
+      )}
     </PageContainer>
   )
 }
