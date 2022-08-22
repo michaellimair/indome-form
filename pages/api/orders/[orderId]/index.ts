@@ -5,7 +5,7 @@ import { isAfter } from 'date-fns';
 import { pick } from 'lodash';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (!['patch', 'get'].includes(req?.method?.toLowerCase() ?? '')) {
+  if (!['patch', 'get', 'delete'].includes(req?.method?.toLowerCase() ?? '')) {
     res.status(405).json({
       message: 'Method not allowed!',
     });
@@ -24,13 +24,26 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return;
   }
 
+  if (req?.method?.toLowerCase() === 'delete') {
+    if (isAfter(new Date(), order.expiresAt)) {
+      res.status(410).json({
+        message: 'Order is expired!',
+      });
+      return;
+    }
+
+    await order.deleteOne();
+    res.status(204).end();
+    return;
+  }
+
   if (req?.method?.toLowerCase() === 'patch') {
     if (isAfter(new Date(), order.expiresAt)) {
       res.status(410).json({
         message: 'Order is expired!',
       });
       return;
-    }  
+    }
 
     if (order.filled) {
       res.status(400).json({

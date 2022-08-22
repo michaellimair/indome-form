@@ -12,3 +12,7 @@ export const updateOrder = async (orderId: string, form: IEventForm) => {
 
   return result.data;
 }
+
+export const cancelOrder = async (orderId: string) => {
+  await axios.delete(`/api/orders/${orderId}`);
+}
