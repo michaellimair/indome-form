@@ -6,6 +6,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "@google-cloud/storage": "^6.4.1",
     "@tanstack/react-query": "^4.2.1",
     "axios": "^0.27.2",
     "date-fns": "^2.29.2",
@@ -15,17 +16,28 @@
     "formidable": "^2.0.1",
     "jimp": "^0.16.1",
     "jsqr": "^1.4.0",
+    "lodash": "^4.17.21",
+    "mime": "^3.0.0",
+    "mongoose": "^6.5.2",
     "next": "latest",
+    "next-connect": "^0.13.0",
     "qrcode-reader": "^1.0.4",
     "react": "18.1.0",
     "react-dom": "18.1.0",
-    "react-markdown": "^8.0.3"
+    "react-hook-form": "^7.34.2",
+    "react-markdown": "^8.0.3",
+    "uuid": "^8.3.2",
+    "validator": "^13.7.0"
   },
   "devDependencies": {
     "@types/formidable": "^2.0.5",
+    "@types/lodash": "^4.14.184",
+    "@types/mime": "^3.0.1",
     "@types/node": "17.0.35",
     "@types/react": "18.0.9",
     "@types/react-dom": "18.0.5",
+    "@types/uuid": "^8.3.4",
+    "@types/validator": "^13.7.5",
     "autoprefixer": "^10.4.7",
     "postcss": "^8.4.14",
     "tailwindcss": "^3.1.2",

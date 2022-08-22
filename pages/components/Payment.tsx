@@ -1,11 +1,13 @@
 import { FC, useMemo, useState } from 'react'
 import { paymentMethods } from '../../constants';
+import { IOrder } from '../../global';
 import { ProofOfPaymentUpload } from './ProofOfPaymentUpload';
 import { SelectedMethodInfo } from './SelectedMethodInfo';
 
-const Payment: FC = () => {
+const Payment: FC<{ order: IOrder }> = ({
+  order,
+}) => {
   const [paymentMethod, setPaymentMethod] = useState<string>();
-  const price = 22500;
   const selectedMethod = useMemo(() => paymentMethods.find((method) => method.name === paymentMethod), [paymentMethods, paymentMethod]);
 
   return (
@@ -26,10 +28,10 @@ const Payment: FC = () => {
         ))}
       </div>
       {selectedMethod && (
-        <SelectedMethodInfo method={selectedMethod} price={price} />
+        <SelectedMethodInfo method={selectedMethod} price={order.price} />
       )}
       {!!selectedMethod && (
-        <ProofOfPaymentUpload />
+        <ProofOfPaymentUpload selectedMethod={selectedMethod} />
       )}
     </div>
   )

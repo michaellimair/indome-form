@@ -44,6 +44,7 @@ export const SelectedMethodInfo: FC<{ method: PaymentMethod; price: number }> = 
   return (
     <div className="mt-4">
       <p className="font-bold">{method.label}</p>
+      <p>Amount: HKD {(price / 100).toFixed(2)}</p>
       <p>Receiver Name: {method.receiverName}</p>
       {method.accountInfo.map(({ type, value, image }) => (
         <>
