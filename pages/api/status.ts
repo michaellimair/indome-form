@@ -20,7 +20,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const pendingCount = await Order.countDocuments({
     filled: false,
     expiresAt: {
-      $lt: new Date()
+      $gt: new Date()
     },
   });
 
