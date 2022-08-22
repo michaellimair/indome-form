@@ -15,7 +15,7 @@ export const EventDescription: FC = () => {
       <p className="mt-4">Ticket Price (includes 2 drinks):</p>
       <ul className="list-disc ml-5 mb-4">
         <li>First Release (limited tickets): 200 HKD</li>
-        <li>Second Release: 220 HKD</li>
+        <li>Second Release: 225 HKD</li>
         <li>Final Release: 250 HKD</li>
         <li>Walk-in: 300 HKD</li>
       </ul>

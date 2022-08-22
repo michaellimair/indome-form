@@ -27,7 +27,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     if (orderCount < 20) {
       price = 20000;
     } else if (orderCount < 50) {
-      price = 22000;
+      price = 22500;
     } else if (orderCount < 115) {
       price = 25000;
     } else {
