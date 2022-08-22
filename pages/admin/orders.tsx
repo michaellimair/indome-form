@@ -3,6 +3,7 @@ import axios from "axios";
 import { Button, Label, Spinner, Table, TextInput } from "flowbite-react";
 import { NextPage } from "next";
 import { FC, useState } from "react";
+import { ExternalLink } from "../../components/ExternalLink";
 import { paymentMethods } from "../../constants";
 import { IOrder } from "../../global";
 
@@ -29,7 +30,7 @@ const TokenInput: FC<{ onChange: (token: string) => void }> = ({
 
 const AdminOrdersPage: NextPage = () => {
   const [token, setToken] = useState<string>();
-  const { data: orders, isFetching, refetch } = useQuery(['admin', 'orders', token], () => {
+  const { data: orders, isFetching, refetch, isError } = useQuery(['admin', 'orders', token], () => {
     return axios.get<IOrder[]>('/api/admin/orders', {
       headers: {
         authorization: `Bearer ${token}`,
@@ -64,81 +65,86 @@ const AdminOrdersPage: NextPage = () => {
 
   return (
     <>
-      <TokenInput onChange={setToken} />
-      <p className="p-3">If you are not able to open the image from the table below, please refresh the page and set the authentication token again.</p>
-      <div className="p-3 mt-2">
-        <Table>
-          <Table.Head>
-            <Table.HeadCell>
-              Name
-            </Table.HeadCell>
-            <Table.HeadCell>
-              Phone
-            </Table.HeadCell>
-            <Table.HeadCell>
-              Email
-            </Table.HeadCell>
-            <Table.HeadCell>
-              Price
-            </Table.HeadCell>
-            <Table.HeadCell>
-              Payment Method
-            </Table.HeadCell>
-            <Table.HeadCell>
-              Payment Proof
-            </Table.HeadCell>
-            <Table.HeadCell>
-              Confirmed
-            </Table.HeadCell>
-            <Table.HeadCell>
-              {/* @ts-ignore */}
-              <span className="sr-only">
-                Confirm
-              </span>
-            </Table.HeadCell>
-          </Table.Head>
-          <Table.Body className="divide-y">
-            {!isFetching ? orders?.map((order) => (
-              <Table.Row key={order._id} className="bg-white dark:border-gray-700 dark:bg-gray-800">
-                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                  {order.name}
-                </Table.Cell>
-                <Table.Cell>
-                  {order.phone}
-                </Table.Cell>
-                <Table.Cell>
-                  {order.email}
-                </Table.Cell>
-                <Table.Cell>
-                  HKD {(order.price / 100).toFixed(2)}
-                </Table.Cell>
-                <Table.Cell>
-                  {paymentMethods.find((method) => method.name === order.paymentMethod)?.label}
-                </Table.Cell>
-                <Table.Cell>
-                  <a href={order.paymentProofUrl} target="_blank" className="font-medium text-blue-600 hover:underline dark:text-blue-500" rel="noopener noreferrer">Link</a>
-                </Table.Cell>
-                <Table.Cell>
-                  {order.confirmed ? 'Yes' : 'No'}
-                </Table.Cell>
-                <Table.Cell>
-                  <Button
-                    disabled={confirmOrderMutation.isLoading && mutatingList.has(order._id)}
-                    onClick={() => confirmOrderMutation.mutate(order._id)}
-                  >
-                    Confirm
-                  </Button>
-                </Table.Cell>
-              </Table.Row>
-            )) : (
-              <Spinner
-                className="p-4"
-                color="info"
-                aria-label="Loading Orders"
-              />          
-            )}
-          </Table.Body>
-        </Table>
+      <TokenInput onChange={(t) => {
+        setToken(t);
+        refetch();
+      }} />
+      <p className="p-3">If you are not able to open the image from the table below, please click the "Set Authentication Token" button above again.</p>
+      <div className="p-3 mt-2 text-center">
+        {!isFetching && orders && (
+          <Table>
+            <Table.Head>
+              <Table.HeadCell>
+                No
+              </Table.HeadCell>
+              <Table.HeadCell>
+                Name
+              </Table.HeadCell>
+              <Table.HeadCell>
+                Phone
+              </Table.HeadCell>
+              <Table.HeadCell>
+                Email
+              </Table.HeadCell>
+              <Table.HeadCell>
+                Price
+              </Table.HeadCell>
+              <Table.HeadCell>
+                Payment Method
+              </Table.HeadCell>
+              <Table.HeadCell>
+                Confirmed
+              </Table.HeadCell>
+              <Table.HeadCell>
+                {/* @ts-ignore */}
+                <span className="sr-only">
+                  Confirm
+                </span>
+              </Table.HeadCell>
+            </Table.Head>
+            <Table.Body className="divide-y">
+              {orders?.map((order, index) => (
+                <Table.Row key={order._id} className={`dark:border-gray-700 ${order.confirmed ? 'bg-green-200' : 'bg-amber-100'}`}>
+                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                    {index + 1}
+                  </Table.Cell>
+                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                    {order.name}
+                  </Table.Cell>
+                  <Table.Cell>
+                    {order.phone} (<ExternalLink target="_blank" rel="noopener noreferrer" href={`https://wa.me/${order.phone.replace('+', '')}`}>WhatsApp</ExternalLink>)
+                  </Table.Cell>
+                  <Table.Cell>
+                    <ExternalLink target="_blank" rel="noopener noreferrer" href={`mailto:${order.email}`}>{order.email}</ExternalLink>
+                  </Table.Cell>
+                  <Table.Cell>
+                    HKD {(order.price / 100).toFixed(0)}
+                  </Table.Cell>
+                  <Table.Cell>
+                    {paymentMethods.find((method) => method.name === order.paymentMethod)?.label} (<ExternalLink target="_blank" rel="noopener noreferrer" href={order.paymentProofUrl}>Link</ExternalLink>)
+                  </Table.Cell>
+                  <Table.Cell>
+                    {order.confirmed ? 'Yes' : 'No'}
+                  </Table.Cell>
+                  <Table.Cell>
+                    <Button
+                      disabled={confirmOrderMutation.isLoading && mutatingList.has(order._id)}
+                      onClick={() => confirmOrderMutation.mutate(order._id)}
+                    >
+                      Confirm
+                    </Button>
+                  </Table.Cell>
+                </Table.Row>
+              ))}
+            </Table.Body>
+          </Table>
+        )}
+        {isFetching && (
+          <Spinner />
+        )}
+        {!isFetching && isError && (
+          <p className="text-center text-red-600 font-bold">Unable to fetch list of orders!</p>
+        )}
       </div>
     </>
   );

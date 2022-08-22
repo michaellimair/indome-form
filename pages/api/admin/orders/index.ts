@@ -21,9 +21,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   const authHeader = req.headers.authorization?.replace('Bearer ', '') ?? '';
 
-  const passLength = adminSecret.length;
+  const maxLength = Math.max(adminSecret.length, authHeader.length);
 
-  const isAuthenticated = timingSafeEqual(Buffer.from(authHeader.padStart(passLength, '0')), Buffer.from(adminSecret));
+  const isAuthenticated = timingSafeEqual(Buffer.from(authHeader.padStart(maxLength, '0')), Buffer.from(adminSecret.padStart(maxLength, '0')));
 
   if (!isAuthenticated) {
     res.status(401).json({
