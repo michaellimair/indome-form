@@ -2,10 +2,10 @@ import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import { CreateOrderSection } from './components/CreateOrderSection';
-import { EventDescription } from './components/EventDescription';
-import { EventForm } from './components/EventForm';
-import { PageContainer } from './components/PageContainer';
+import { CreateOrderSection } from '../components/CreateOrderSection';
+import { EventDescription } from '../components/EventDescription';
+import { EventForm } from '../components/EventForm';
+import { PageContainer } from '../components/PageContainer';
 
 const Home: NextPage = () => {
   const status = useQuery(['status'], () => axios.get<{ orderCount: number; available: boolean }>('/api/status'), {
