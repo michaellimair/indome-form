@@ -31,7 +31,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     } else if (orderCount < 115) {
       price = 25000;
     } else {
-      await session.endSession();
       res.status(400).json({
         message: 'No more available quota!',
       });
