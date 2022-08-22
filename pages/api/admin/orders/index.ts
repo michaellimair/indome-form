@@ -40,7 +40,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return ({
         ...order.toJSON(),
         paymentProofUrl: await indomeBucket.file(order.paymentProofFileName).getSignedUrl({
-          expires: addMinutes(new Date(), 5),
+          expires: addMinutes(new Date(), 15),
           version: 'v4',
           action: 'read'
         }).then((result) => result[0])
