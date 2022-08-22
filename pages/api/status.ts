@@ -1,5 +1,4 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { addMinutes } from 'date-fns';
 import dbConnect from '../../utils/dbConnect';
 import Order from '../../models/Order';
 
@@ -15,7 +14,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   const completedCount = await Order.countDocuments({
     filled: true,
-  })
+  });
 
   const pendingCount = await Order.countDocuments({
     filled: false,
@@ -28,6 +27,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   res.status(200).json({
     orderCount,
+    firstReleaseAvailable: orderCount < 20,
+    secondReleaseAvailable: orderCount < 50,
     available: orderCount < 115,
     waitlist: completedCount < 115,
     pendingCount,

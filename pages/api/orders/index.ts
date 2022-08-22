@@ -19,7 +19,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       $or: [
         { filled: true },
         { filled: false, expiresAt: {
-          $lt: new Date()
+          $gt: new Date()
         } }
       ]
     });

@@ -1,7 +1,13 @@
 import { FC } from "react";
 import { ExternalLink } from "./ExternalLink";
 
-export const EventDescription: FC = () => {
+export const EventDescription: FC<{
+  firstReleaseAvailable: boolean;
+  secondReleaseAvailable: boolean;
+}> = ({
+  firstReleaseAvailable,
+  secondReleaseAvailable,
+}) => {
   return (
     <div className="mt-4 w-full">
       <p className="mb-2 font-bold text-3xl">INDOME is back!</p>
@@ -14,8 +20,8 @@ export const EventDescription: FC = () => {
 
       <p className="mt-4">Ticket Price (includes 2 drinks):</p>
       <ul className="list-disc ml-5 mb-4">
-        <li>First Release (limited tickets): 200 HKD</li>
-        <li>Second Release: 225 HKD</li>
+        <li className={!firstReleaseAvailable ? 'line-through' : ''}>First Release (limited tickets): 200 HKD</li>
+        <li className={!secondReleaseAvailable ? 'line-through' : ''}>Second Release: 225 HKD</li>
         <li>Final Release: 250 HKD</li>
         <li>Walk-in: 300 HKD</li>
       </ul>
