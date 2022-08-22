@@ -2,6 +2,8 @@
 
 Form made for the InDome 2022: Roof Rave Party event. Made with Next.js, Tailwind CSS, Flowbite React, and Mongoose. Deployed in Google Cloud Run with a MongoDB Cloud database and Google Cloud Storage for object storage.
 
+Secrets for deployment are stored locally in `.env` (copy from `.env.example`), but Google Cloud Secret Manager is used to manage environment variables being used in Google Cloud Run.
+
 ## How to use
 
 ```
