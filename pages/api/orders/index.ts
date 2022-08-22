@@ -37,7 +37,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return;
     }
     const order = await Order.create({
-      expiresAt: addMinutes(new Date(), 10),
+      expiresAt: addMinutes(new Date(), 15),
       price,
     });
   
