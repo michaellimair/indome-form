@@ -13,17 +13,23 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   await dbConnect();
 
-  const orderCount = await Order.countDocuments({
-    $or: [
-      { filled: true },
-      { filled: false, expiresAt: {
-        $lt: new Date()
-      } }
-    ]
+  const completedCount = await Order.countDocuments({
+    filled: true,
+  })
+
+  const pendingCount = await Order.countDocuments({
+    filled: false,
+    expiresAt: {
+      $lt: new Date()
+    },
   });
+
+  const orderCount = pendingCount + completedCount;
 
   res.status(200).json({
     orderCount,
     available: orderCount < 115,
+    waitlist: completedCount < 115,
+    pendingCount,
   });
 }
