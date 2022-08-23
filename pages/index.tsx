@@ -17,9 +17,9 @@ const Home: NextPage = () => {
           <Spinner color="info" />
         </div>
       )}
-      {!status.isFetching && status?.data?.available && (
+      {!status.isFetching && status?.data && (
         <>
-          <EventDescription firstReleaseAvailable={status?.data?.firstReleaseAvailable} secondReleaseAvailable={status?.data?.secondReleaseAvailable} />
+          <EventDescription firstReleaseAvailable={status?.data?.firstReleaseAvailable} secondReleaseAvailable={status?.data?.secondReleaseAvailable} available={status?.data?.available} />
           <CreateOrderSection />
         </>
       )}

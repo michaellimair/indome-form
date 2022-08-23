@@ -4,9 +4,11 @@ import { ExternalLink } from "./ExternalLink";
 export const EventDescription: FC<{
   firstReleaseAvailable: boolean;
   secondReleaseAvailable: boolean;
+  available: boolean;
 }> = ({
   firstReleaseAvailable,
   secondReleaseAvailable,
+  available,
 }) => {
   return (
     <div className="mt-4 w-full">
@@ -22,8 +24,8 @@ export const EventDescription: FC<{
       <ul className="list-disc ml-5 mb-4">
         <li><span className={!firstReleaseAvailable ? 'line-through' : ''}>First Release (limited tickets): 200 HKD</span> {!firstReleaseAvailable && <b>SOLD OUT</b>}</li>
         <li><span className={!secondReleaseAvailable ? 'line-through' : ''}>Second Release (limited tickets): 225 HKD</span> {!secondReleaseAvailable && <b>SOLD OUT</b>}</li>
-        <li>Final Release: 250 HKD</li>
-        <li>Walk-in: 300 HKD</li>
+        <li><span className={!available ? 'line-through' : ''}>Final Release: 250 HKD</span> {!available && <b>SOLD OUT</b>}</li>
+        <li><span className={!available ? 'line-through' : ''}>Walk In: 300 HKD</span> {!available && <b>No more walk-in spots available!</b>}</li>
       </ul>
 
       <p className="font-bold">* Places are limited, so grab your spot fast! Your price will be allocated automatically on a first-come-first-serve basis.</p>
