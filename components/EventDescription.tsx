@@ -20,8 +20,8 @@ export const EventDescription: FC<{
 
       <p className="mt-4">Ticket Price (includes 2 drinks):</p>
       <ul className="list-disc ml-5 mb-4">
-        <li className={!firstReleaseAvailable ? 'line-through' : ''}>First Release (limited tickets): 200 HKD</li>
-        <li className={!secondReleaseAvailable ? 'line-through' : ''}>Second Release: 225 HKD</li>
+        <li><span className={!firstReleaseAvailable ? 'line-through' : ''}>First Release (limited tickets): 200 HKD</span> {!firstReleaseAvailable && <b>SOLD OUT</b>}</li>
+        <li><span className={!secondReleaseAvailable ? 'line-through' : ''}>Second Release (limited tickets): 225 HKD</span> {!secondReleaseAvailable && <b>SOLD OUT</b>}</li>
         <li>Final Release: 250 HKD</li>
         <li>Walk-in: 300 HKD</li>
       </ul>
