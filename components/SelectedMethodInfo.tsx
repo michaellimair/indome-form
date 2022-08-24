@@ -1,4 +1,5 @@
-import { FC, useMemo } from "react";
+import { Button, Tooltip } from "flowbite-react";
+import { FC, useCallback, useMemo, useState } from "react";
 import { AccountInfo, AccountInfoType, PaymentMethod } from "../constants";
 import { ExternalLink } from "./ExternalLink";
 
@@ -16,9 +17,13 @@ const AccountInfoValue: FC<AccountInfo> = ({ type, value }) => {
   return <>{value}</>
 }
 
-const FPSQRCodeDisplay: FC<{ price: number }> = ({
+interface SelectedMethodInfoProps { method: PaymentMethod; price: number }
+
+const FPSQRCodeDisplay: FC<SelectedMethodInfoProps> = ({
   price,
+  method,
 }) => {
+  const [showTooltip, setShowTooltip] = useState<boolean>(false);
   const imageSrc = useMemo(() => {
     if (price === 20000) {
       return '/qrcode_200hkd.png';
@@ -29,15 +34,30 @@ const FPSQRCodeDisplay: FC<{ price: number }> = ({
     return '/qrcode_250hkd.png';
   }, [price]);
 
+  const copyPhone = useCallback(() => {
+    navigator.clipboard.writeText(method.accountInfo[0].value.replace('+852-', ''));
+    setShowTooltip(true);
+    setTimeout(() => {
+      setShowTooltip(false);
+    }, 2500);
+  }, [method]);
+
   return (
-    <img
-      src={imageSrc}
-      className="w-84"
-    />
+    <div>
+      <img
+        src={imageSrc}
+        className="w-84"
+      />
+      <Tooltip content={<span>{showTooltip ? 'Copied' : 'Copy'}</span>}>
+        <Button style={{ marginTop: 2 }} onClick={copyPhone}>
+          Copy Phone Number
+        </Button>
+      </Tooltip>
+    </div>
   );
 };
 
-export const SelectedMethodInfo: FC<{ method: PaymentMethod; price: number }> = ({
+export const SelectedMethodInfo: FC<SelectedMethodInfoProps> = ({
   method,
   price,
 }) => {
@@ -58,7 +78,7 @@ export const SelectedMethodInfo: FC<{ method: PaymentMethod; price: number }> = 
         </>
       ))}
       {method.name === 'fps' && (
-        <FPSQRCodeDisplay price={price} />
+        <FPSQRCodeDisplay price={price} method={method} />
       )}
     </div>
   )
