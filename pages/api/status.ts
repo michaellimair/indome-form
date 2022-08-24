@@ -28,7 +28,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   res.status(200).json({
     orderCount,
     firstReleaseAvailable: orderCount < 20,
-    secondReleaseAvailable: orderCount < 50,
+    secondReleaseAvailable: orderCount < 55,
     available: orderCount < 115,
     waitlist: completedCount < 115,
     pendingCount,
