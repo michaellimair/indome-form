@@ -1,7 +1,5 @@
-import Link from 'next/link';
 import { FC, useCallback, useMemo, useState } from 'react';
 import { Button } from './Button';
-// import Jimp from 'jimp';
 import jsQR from 'jsqr';
 import axios from 'axios';
 import { useRouter } from 'next/router';
