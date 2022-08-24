@@ -13,6 +13,7 @@ jobs:
   setup-build-deploy:
     name: Setup, Build, and Deploy
     runs-on: ubuntu-latest
+    timeout-minutes: 15
 
     # Add "id-token" with the intended permissions.
     permissions:
@@ -34,6 +35,12 @@ jobs:
     # Setup gcloud CLI
     - name: Set up Cloud SDK
       uses: google-github-actions/setup-gcloud@v0
+
+    - name: Enable Kaniko
+      run: gcloud config set builds/use_kaniko True
+
+    - name: Set Kaniko TTL
+      run: gcloud config set builds/kaniko_cache_ttl 24
 
     # Build and push image to Google Container Registry
     - name: Build
