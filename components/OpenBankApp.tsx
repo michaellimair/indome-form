@@ -23,7 +23,7 @@ export const OpenBankApp: FC = () => {
       <Button color="success" style={{ backgroundColor: 'black' }} onClick={openMoxBankApp}>
         Open in Mox Bank
       </Button>
-      <Button color="success" style={{ backgroundColor: '#02ce9e' }} onClick={openMoxBankApp}>
+      <Button color="success" style={{ backgroundColor: '#02ce9e' }} onClick={openZABankApp}>
         Open in ZA Bank
       </Button>
       <p className="text-sm">Note: Other banks are also supported, the buttons above are only provided for convenience</p>
