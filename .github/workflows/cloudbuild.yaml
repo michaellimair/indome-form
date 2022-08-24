@@ -43,8 +43,8 @@ jobs:
           --tag "gcr.io/$PROJECT_ID/$SERVICE_NAME:$GITHUB_SHA"
 
     - name: Deploy service to Cloud Run
-      id: deploy
+    - id: 'deploy'
+      uses: 'google-github-actions/deploy-cloudrun@v0'
       with:
-        credentials: ${{ secrets.RUN_SA_KEY }}
+        service: ${{ secrets.RUN_SERVICE }}
         image: "gcr.io/$PROJECT_ID/$SERVICE_NAME:$GITHUB_SHA"
-        service: ${{ steps.service.outputs.service }}
