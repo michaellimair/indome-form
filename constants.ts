@@ -17,7 +17,7 @@ export interface PaymentMethod {
   label: string;
   receiverName: string;
   accountInfo: AccountInfo[];
-  bank: string;
+  bank?: string;
 }
 
 export const paymentMethods: PaymentMethod[] = [
@@ -40,7 +40,6 @@ export const paymentMethods: PaymentMethod[] = [
       value: 'https://payme.hsbc/npratama',
       image: '/payme_code.jpeg',
     }],
-    bank: 'HSBC',
   },
   {
     name: 'bank_transfer',

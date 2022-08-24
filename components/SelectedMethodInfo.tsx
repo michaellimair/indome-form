@@ -19,11 +19,35 @@ const AccountInfoValue: FC<AccountInfo> = ({ type, value }) => {
 
 interface SelectedMethodInfoProps { method: PaymentMethod; price: number }
 
+const CopyButton: FC<{ value: string; label: string }> = ({
+  value,
+  label,
+}) => {
+  const [showTooltip, setShowTooltip] = useState<boolean>(false);
+
+  const copyAccountNumber = useCallback(() => {
+    navigator.clipboard.writeText(value);
+    setShowTooltip(true);
+    setTimeout(() => {
+      setShowTooltip(false);
+    }, 2500);
+  }, [value]);
+
+  return (
+    <div>
+      <Tooltip content={<span>{showTooltip ? 'Copied' : 'Copy'}</span>}>
+        <Button style={{ marginTop: 2 }} onClick={copyAccountNumber}>
+          {label}
+        </Button>
+      </Tooltip>
+    </div>
+  );
+};
+
 const FPSQRCodeDisplay: FC<SelectedMethodInfoProps> = ({
   price,
   method,
 }) => {
-  const [showTooltip, setShowTooltip] = useState<boolean>(false);
   const imageSrc = useMemo(() => {
     if (price === 20000) {
       return '/qrcode_200hkd.png';
@@ -34,25 +58,13 @@ const FPSQRCodeDisplay: FC<SelectedMethodInfoProps> = ({
     return '/qrcode_250hkd.png';
   }, [price]);
 
-  const copyPhone = useCallback(() => {
-    navigator.clipboard.writeText(method.accountInfo[0].value.replace('+852-', ''));
-    setShowTooltip(true);
-    setTimeout(() => {
-      setShowTooltip(false);
-    }, 2500);
-  }, [method]);
-
   return (
     <div>
       <img
         src={imageSrc}
         className="w-84"
       />
-      <Tooltip content={<span>{showTooltip ? 'Copied' : 'Copy'}</span>}>
-        <Button style={{ marginTop: 2 }} onClick={copyPhone}>
-          Copy Phone Number
-        </Button>
-      </Tooltip>
+      <CopyButton value={method.accountInfo[0].value.replace('+852-', '')} label="Copy Phone Number" />
     </div>
   );
 };
@@ -64,8 +76,9 @@ export const SelectedMethodInfo: FC<SelectedMethodInfoProps> = ({
   return (
     <div className="mt-4">
       <p className="font-bold">{method.label}</p>
-      <p>Amount: HKD {(price / 100).toFixed(2)}</p>
       <p>Receiver Name: {method.receiverName}</p>
+      <p>Amount: HKD {(price / 100).toFixed(2)}</p>
+      {method.bank && <p>Bank: {method.bank}</p>}
       {method.accountInfo.map(({ type, value, image }) => (
         <>
           <p>{getLabelByAccountInfoType(type)}: <AccountInfoValue type={type} value={value} /></p>
@@ -74,6 +87,11 @@ export const SelectedMethodInfo: FC<SelectedMethodInfoProps> = ({
               src={image}
               className="w-96"
             />
+          )}
+          {method.name === 'bank_transfer' && (
+            <div className="mt-3">
+              <CopyButton value={value.replace(/-/gi, '')} label="Copy Account Number" />
+            </div>
           )}
         </>
       ))}
