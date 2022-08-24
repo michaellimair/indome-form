@@ -24,7 +24,6 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
 
-    # Alternative option - authentication via credentials json
     - id: 'auth'
       uses: 'google-github-actions/auth@v0'
       with:
@@ -54,6 +53,7 @@ jobs:
       with:
         service: ${{ secrets.RUN_SERVICE }}
         image: gcr.io/${{ secrets.RUN_PROJECT }}/${{ secrets.RUN_SERVICE }}:${{ github.sha }}
+        region: ${{ secrets.RUN_REGION }}
         secrets: |
           INDOME_DB_NAME=INDOME_DB_NAME:latest
           INDOME_MONGODB_URI=INDOME_MONGODB_URI:latest
