@@ -21,6 +21,9 @@ export const CreateOrderSection: FC = () => {
       <Button onClick={() => createOrderMutation.mutate()} disabled={createOrderMutation.isLoading}>
         Proceed to Purchase
       </Button>
+      {createOrderMutation.isError && (
+        <p className="text-red-600 mt-2">Unable to proceed to purchase, please try again</p>
+      )}
     </div>
   )
 };
