@@ -30,7 +30,7 @@ const Home: NextPage = () => {
         </div>
       )}
       {!status.isFetching && !status?.data?.available && !status?.data?.waitlist && (
-        <p className="text-center font-bold pt-4">We are sorry, there are no more tickets for InDome 2022. Thank you for your interest!</p>
+        <p className="text-center font-bold pt-4">We are sorry, there are no more online tickets for InDome 2022. Please proceed to walk-in starting from 6pm.</p>
       )}
     </PageContainer>
   )
