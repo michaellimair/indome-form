@@ -36,12 +36,6 @@ jobs:
     - name: Set up Cloud SDK
       uses: google-github-actions/setup-gcloud@v0
 
-    - name: Enable Kaniko
-      run: gcloud config set builds/use_kaniko True
-
-    - name: Set Kaniko TTL
-      run: gcloud config set builds/kaniko_cache_ttl 24
-
     # Build and push image to Google Container Registry
     - name: Build
       run: |-
