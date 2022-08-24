@@ -11,7 +11,9 @@ const OrderForm: NextPage = () => {
   const router = useRouter();
   const orderId = router.query.orderId;
 
-  const { data: order } = useQuery(['order', orderId], () => axios.get<IOrder>(`/api/orders/${orderId}`).then((r) => r.data));
+  const { data: order } = useQuery(['order', orderId], () => axios.get<IOrder>(`/api/orders/${orderId}`).then((r) => r.data), {
+    enabled: !!orderId,
+  });
   
   return (
     <PageContainer>
