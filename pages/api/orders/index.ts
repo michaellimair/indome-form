@@ -26,13 +26,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     let price: number;
     if (orderCount < 20) {
       price = 20000;
-    } else if (orderCount < 50) {
+    } else if (orderCount < 55) {
       price = 22500;
     } else if (orderCount < 115) {
       price = 25000;
     } else {
       res.status(400).json({
-        message: 'No more available quota!',
+        message: 'No more available quota! Please proceed to walk-in starting from 6pm',
       });
       return;
     }
