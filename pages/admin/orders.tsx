@@ -131,7 +131,7 @@ const AdminOrdersPage: NextPage = () => {
                       disabled={confirmOrderMutation.isLoading && mutatingList.has(order._id)}
                       onClick={() => confirmOrderMutation.mutate(order._id)}
                     >
-                      Confirm
+                      {order.confirmed ? 'Resend Email' : 'Confirm'}
                     </Button>
                   </Table.Cell>
                 </Table.Row>
