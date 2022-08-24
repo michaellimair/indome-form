@@ -1,0 +1,50 @@
+name: Build using Cloud Build
+
+on:
+  push:
+    branches:
+    - 'main'
+
+env:
+  PROJECT_ID: ${{ secrets.RUN_PROJECT }}
+  SERVICE_NAME: ${{ secrets.RUN_SERVICE }}
+
+jobs:
+  setup-build-deploy:
+    name: Setup, Build, and Deploy
+    runs-on: ubuntu-latest
+
+    # Add "id-token" with the intended permissions.
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+
+    steps:
+    - id: service
+      run: echo ::set-output name=service::run-envvars-$GITHUB_SHA
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    # Alternative option - authentication via credentials json
+    - id: 'auth'
+      uses: 'google-github-actions/auth@v0'
+      with:
+        credentials_json: '${{ secrets.RUN_SA_KEY }}'
+
+    # Setup gcloud CLI
+    - name: Set up Cloud SDK
+      uses: google-github-actions/setup-gcloud@v0
+
+    # Build and push image to Google Container Registry
+    - name: Build
+      run: |-
+        gcloud builds submit \
+          --quiet \
+          --tag "gcr.io/$PROJECT_ID/$SERVICE_NAME:$GITHUB_SHA"
+
+    - name: Deploy service to Cloud Run
+      id: deploy
+      with:
+        credentials: ${{ secrets.RUN_SA_KEY }}
+        image: "gcr.io/$PROJECT_ID/$SERVICE_NAME:$GITHUB_SHA"
+        service: ${{ steps.service.outputs.service }}
