@@ -2,6 +2,7 @@ import { Button, Tooltip } from "flowbite-react";
 import { FC, useCallback, useMemo, useState } from "react";
 import { AccountInfo, AccountInfoType, PaymentMethod } from "../constants";
 import { ExternalLink } from "./ExternalLink";
+import { OpenBankApp } from "./OpenBankApp";
 
 const getLabelByAccountInfoType = (type: AccountInfoType) => {
   if (type === AccountInfoType.MOBILE_NUMBER) {
@@ -97,6 +98,9 @@ export const SelectedMethodInfo: FC<SelectedMethodInfoProps> = ({
       ))}
       {method.name === 'fps' && (
         <FPSQRCodeDisplay price={price} method={method} />
+      )}
+      {(method.name === 'fps' || method.name === 'bank_transfer') && (
+        <OpenBankApp />
       )}
     </div>
   )
