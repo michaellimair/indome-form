@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import dbConnect from '../../utils/dbConnect';
 import Order from '../../models/Order';
+import { completedQuery, pendingQuery } from '../../utils/db';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'GET') {
@@ -10,27 +11,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return;
   }
 
-  await dbConnect();
-
-  const completedCount = await Order.countDocuments({
-    filled: true,
-  });
-
-  const pendingCount = await Order.countDocuments({
-    filled: false,
-    expiresAt: {
-      $gt: new Date()
-    },
-  });
-
-  const orderCount = pendingCount + completedCount;
-
-  res.status(200).json({
-    orderCount,
-    firstReleaseAvailable: orderCount < 20,
-    secondReleaseAvailable: orderCount < 55,
-    available: orderCount < 115,
-    waitlist: completedCount < 115,
-    pendingCount,
+  const db = await dbConnect();
+  const session = await db.startSession();
+  await session.withTransaction(async () => {
+    const completedCount = await Order.countDocuments(completedQuery);
+    const pendingCount = await Order.countDocuments(pendingQuery);
+    const orderCount = pendingCount + completedCount;
+    res.status(200).json({
+      orderCount,
+      firstReleaseAvailable: orderCount < 20,
+      secondReleaseAvailable: orderCount < 55,
+      available: orderCount < 115,
+      waitlist: completedCount < 115,
+      pendingCount,
+    });
   });
 }

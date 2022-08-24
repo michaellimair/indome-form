@@ -4,6 +4,7 @@ import { Button, Label, Spinner, Table, TextInput } from "flowbite-react";
 import { NextPage } from "next";
 import { FC, useState } from "react";
 import { ExternalLink } from "../../components/ExternalLink";
+import { OrderTable } from "../../components/OrderTable";
 import { paymentMethods } from "../../constants";
 import { IOrder } from "../../global";
 
@@ -40,104 +41,33 @@ const AdminOrdersPage: NextPage = () => {
     enabled: !!token,
     retry: false,
   });
-  const [mutatingList, setMutatingList] = useState<Set<string>>(new Set<string>());
-  const confirmOrderMutation = useMutation(['admin', 'orders', 'confirm', token], async (orderId: string) => {
-    await axios.post(`/api/admin/orders/${orderId}/confirm`, {}, {
+
+  const { data: pendingOrders, isFetching: isFetchingPendingOrders, isError: isPendingOrdersError, refetch: refetchPending } = useQuery(['admin', 'orders', 'pending', token], () => {
+    return axios.get<IOrder[]>('/api/admin/orders', {
+      params: {
+        pending: true,
+      },
       headers: {
         authorization: `Bearer ${token}`,
-      },
-    });
-    await refetch();
+      }
+    }).then((r) => r.data)
   }, {
-    onMutate: (orderId) => {
-      setMutatingList((l) => {
-        l.add(orderId);
-        return l;
-      });
-    },
-    onSettled: (_, __, orderId) => {
-      setMutatingList((l) => {
-        l.delete(orderId);
-        return l;
-      });
-    }
+    enabled: !!token,
+    retry: false,
   });
 
   return (
-    <>
+    <div className="py-3 max-w-7xl mx-auto">
       <TokenInput onChange={(t) => {
         setToken(t);
         refetch();
+        refetchPending();
       }} />
       <p className="p-3">If you are not able to open the image from the table below, please click the "Set Authentication Token" button above again.</p>
-      <div className="p-3 mt-2 text-center">
+      <h2 className="font-bold mt-2 ml-3">Completed Orders</h2>
+      <div className="p-3 text-center">
         {!isFetching && orders && (
-          <Table>
-            <Table.Head>
-              <Table.HeadCell>
-                No
-              </Table.HeadCell>
-              <Table.HeadCell>
-                Name
-              </Table.HeadCell>
-              <Table.HeadCell>
-                Phone
-              </Table.HeadCell>
-              <Table.HeadCell>
-                Email
-              </Table.HeadCell>
-              <Table.HeadCell>
-                Price
-              </Table.HeadCell>
-              <Table.HeadCell>
-                Payment Method
-              </Table.HeadCell>
-              <Table.HeadCell>
-                Confirmed
-              </Table.HeadCell>
-              <Table.HeadCell>
-                {/* @ts-ignore */}
-                <span className="sr-only">
-                  Confirm
-                </span>
-              </Table.HeadCell>
-            </Table.Head>
-            <Table.Body className="divide-y">
-              {orders?.map((order, index) => (
-                <Table.Row key={order._id} className={`dark:border-gray-700 ${order.confirmed ? 'bg-green-200' : 'bg-amber-100'}`}>
-                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                    {index + 1}
-                  </Table.Cell>
-                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                    {order.name}
-                  </Table.Cell>
-                  <Table.Cell>
-                    {order.phone} (<ExternalLink target="_blank" rel="noopener noreferrer" href={`https://wa.me/${order.phone.replace('+', '')}`}>WhatsApp</ExternalLink>)
-                  </Table.Cell>
-                  <Table.Cell>
-                    <ExternalLink target="_blank" rel="noopener noreferrer" href={`mailto:${order.email}`}>{order.email}</ExternalLink>
-                  </Table.Cell>
-                  <Table.Cell>
-                    HKD {(order.price / 100).toFixed(0)}
-                  </Table.Cell>
-                  <Table.Cell>
-                    {paymentMethods.find((method) => method.name === order.paymentMethod)?.label} (<ExternalLink target="_blank" rel="noopener noreferrer" href={order.paymentProofUrl}>Link</ExternalLink>)
-                  </Table.Cell>
-                  <Table.Cell>
-                    {order.confirmed ? 'Yes' : 'No'}
-                  </Table.Cell>
-                  <Table.Cell>
-                    <Button
-                      disabled={confirmOrderMutation.isLoading && mutatingList.has(order._id)}
-                      onClick={() => confirmOrderMutation.mutate(order._id)}
-                    >
-                      {order.confirmed ? 'Resend Email' : 'Confirm'}
-                    </Button>
-                  </Table.Cell>
-                </Table.Row>
-              ))}
-            </Table.Body>
-          </Table>
+          <OrderTable orders={orders} onConfirm={() => refetch()} token={token!} />
         )}
         {isFetching && (
           <Spinner />
@@ -146,7 +76,23 @@ const AdminOrdersPage: NextPage = () => {
           <p className="text-center text-red-600 font-bold">Unable to fetch list of orders!</p>
         )}
       </div>
-    </>
+      <h2 className="font-bold mt-2 ml-3">Pending Orders</h2>
+      <p className="px-3">Pending orders are orders which are not expired (the user is still filling in the form). A price tier (first release, second release, etc.) is assigned to an order when it is created.</p>
+      <div className="p-3 text-center">
+        {!isFetchingPendingOrders && !!pendingOrders?.length && (
+          <OrderTable orders={pendingOrders} onConfirm={() => refetch()} token={token!} />
+        )}
+        {!isFetchingPendingOrders && pendingOrders && !pendingOrders.length && (
+          <p className="text-center font-bold">There are no pending orders</p>
+        )}
+        {isFetchingPendingOrders && (
+          <Spinner />
+        )}
+        {!isFetchingPendingOrders && isPendingOrdersError && (
+          <p className="text-center text-red-600 font-bold">Unable to fetch list of pending orders!</p>
+        )}
+      </div>
+    </div>
   );
 }
 
