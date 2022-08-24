@@ -21,8 +21,9 @@ jobs:
       id-token: 'write'
 
     steps:
-    - id: service
-      run: echo ::set-output name=service::run-envvars-$GITHUB_SHA
+    - name: Set outputs
+      id: vars
+      run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
     - name: Checkout
       uses: actions/checkout@v3
 
@@ -46,7 +47,7 @@ jobs:
       uses: docker/build-push-action@v2
       with:
         push: true
-        tags: gcr.io/$PROJECT_ID/$SERVICE_NAME:$GITHUB_SHA
+        tags: gcr.io/${{ secrets.RUN_PROJECT }}/${{ secrets.RUN_SERVICE }}:${{ steps.vars.outputs.sha_short }}
         cache-from: type=gha
         cache-to: type=gha,mode=max
 
@@ -55,7 +56,7 @@ jobs:
       uses: 'google-github-actions/deploy-cloudrun@v0'
       with:
         service: ${{ secrets.RUN_SERVICE }}
-        image: "gcr.io/$PROJECT_ID/$SERVICE_NAME:$GITHUB_SHA"
+        image: gcr.io/${{ secrets.RUN_PROJECT }}/${{ secrets.RUN_SERVICE }}:${{ steps.vars.outputs.sha_short }}
         secrets: |
           INDOME_DB_NAME=INDOME_DB_NAME:latest
           INDOME_MONGODB_URI=INDOME_MONGODB_URI:latest
