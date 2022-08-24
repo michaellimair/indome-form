@@ -13,6 +13,8 @@ export const Countdown: FC<{ order: IOrder }> = ({ order }) => {
       if (remainMs > 0) {
         setRemaining(remainMs);
       } else {
+        clearInterval(interval);
+        alert('Your order has expired, redirecting back to home page!');
         window.location.replace('/');
       }
     }, 250);
