@@ -22,7 +22,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       firstReleaseAvailable: orderCount < 20,
       secondReleaseAvailable: orderCount < 55,
       available: orderCount < 115,
-      waitlist: completedCount < 115,
+      finalised: completedCount < 115,
       pendingCount,
     });
   });

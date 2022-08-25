@@ -4,7 +4,9 @@ import { FC } from "react";
 import { createOrder } from "../utils/order";
 import { Button } from "./Button";
 
-export const CreateOrderSection: FC = () => {
+export const CreateOrderSection: FC<{ available: boolean }> = ({
+  available,
+}) => {
   const router = useRouter();
   const createOrderMutation = useMutation(
     ['orders', 'create'],
@@ -18,9 +20,9 @@ export const CreateOrderSection: FC = () => {
 
   return (
     <div className="mt-4">
-      <Button onClick={() => createOrderMutation.mutate()} disabled={createOrderMutation.isLoading}>
+      {available && <Button onClick={() => createOrderMutation.mutate()} disabled={createOrderMutation.isLoading}>
         Proceed to Purchase
-      </Button>
+      </Button>}
       {createOrderMutation.isError && (
         <p className="text-red-600 mt-2">Unable to proceed to purchase, please try again</p>
       )}

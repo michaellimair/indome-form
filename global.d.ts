@@ -25,6 +25,13 @@ export interface IOrder {
   paymentProofUrl?: string;
 }
 
+export interface IWaitlist {
+  _id: string;
+  name: string;
+  email: string;
+  phone: string;
+}
+
 export interface IEventForm {
   name: string;
   email: string;
