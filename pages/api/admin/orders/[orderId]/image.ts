@@ -33,7 +33,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   await dbConnect();
-  const order = await Order.findOne({ id: req.query.orderId! });
+  const order = await Order.findById(req.query.orderId);
 
   if (!order || !order.paymentProofFileName) {
     res.status(404).json({
