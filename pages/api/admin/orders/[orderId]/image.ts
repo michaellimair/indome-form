@@ -1,10 +1,9 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import Order from '../../../../models/Order';
-import dbConnect from '../../../../utils/dbConnect';
+import Order from '../../../../../models/Order';
+import dbConnect from '../../../../../utils/dbConnect';
 import { addMinutes } from 'date-fns';
 import { timingSafeEqual } from 'crypto';
-import { indomeBucket } from '../../../../utils/storage';
-import { getCompletedQuery, getPendingQuery } from '../../../../utils/db';
+import { indomeBucket } from '../../../../../utils/storage';
 
 const adminSecret = process.env.INDOME_ADMIN_SECRET!;
 
@@ -20,7 +19,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return;
   }
 
-  const authHeader = req.headers.authorization?.replace('Bearer ', '') ?? '';
+  const authHeader = req.query.token! as string;
 
   const maxLength = Math.max(adminSecret.length, authHeader.length);
 
@@ -34,9 +33,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   await dbConnect();
-  const orders = await Order.find(req.query.pending === 'true' ? getPendingQuery() : getCompletedQuery(), undefined, {
-    sort: ['createdAt']
+  const order = await Order.findOne({ id: req.query.orderId! });
+
+  if (!order || !order.paymentProofFileName) {
+    res.status(404).json({
+      message: 'Not Found!',
+    });
+  }
+
+  const [url] = await indomeBucket.file(order!.paymentProofFileName).getSignedUrl({
+    expires: addMinutes(new Date(), 5),
+    version: 'v4',
+    action: 'read'
   });
 
-  res.status(200).json(orders.map((it) => it.toJSON()));
+  res.redirect(url);
 }

@@ -22,7 +22,6 @@ export interface IOrder {
   paymentMethod: string;
   paymentProofFileName: string;
   price: number;
-  paymentProofUrl?: string;
 }
 
 export interface IWaitlist {
