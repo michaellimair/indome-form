@@ -34,7 +34,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   await dbConnect();
-  const orders = await Order.find(req.query.pending === 'true' ? pendingQuery : completedQuery);
+  const orders = await Order.find(req.query.pending === 'true' ? pendingQuery : completedQuery, undefined, {
+    sort: ['createdAt']
+  });
 
   const ordersWithImage = await Promise.all(
     orders.map(async (order) => {
