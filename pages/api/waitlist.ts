@@ -1,13 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import url from 'url';
 import dbConnect from '../../utils/dbConnect';
 import Waitlist from '../../models/Waitlist';
 import { pick } from 'lodash';
-import axios from 'axios';
-
-if (!process.env.RECAPTCHA_SECRET) {
-  throw new Error('ReCaptcha v3 secret is not configured correctly!');
-}
+import { verifyCaptcha } from '../../utils/captcha';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') {
@@ -26,15 +21,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return;
   }
 
-  const params = new url.URLSearchParams({
-    response: recaptchaKey,
-    secret: process.env.RECAPTCHA_SECRET!,
-  });
-  const captcha = await axios.post<{ success: boolean }>('https://www.google.com/recaptcha/api/siteverify', params.toString());
+  const captchaVerified = await verifyCaptcha(recaptchaKey);
 
-  console.log(captcha.data);
-
-  if (!captcha.data.success) {
+  if (!captchaVerified) {
     res.status(403).json({
       message: 'Captcha validation failed!',
     });
