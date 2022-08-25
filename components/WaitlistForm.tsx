@@ -5,22 +5,24 @@ import { IWaitlist } from "../global";
 import { createWaitlist } from "../utils/order";
 import validator from 'validator';
 import { Button, TextInput } from "flowbite-react";
+import { GoogleReCaptcha } from 'react-google-recaptcha-v3';
 
 export const WaitlistForm: FC = () => {
-  const { handleSubmit, control } = useForm<Omit<IWaitlist, '_id'>>({
+  const { handleSubmit, control, setValue } = useForm<Omit<IWaitlist, '_id'> & { recaptchaKey: string }>({
     defaultValues: {
       name: '',
       email: '',
       phone: '',
+      recaptchaKey: '',
     },
   });
 
   const createWaitlistMutation = useMutation(
     ['waitlist', 'create'],
-    (data: Omit<IWaitlist, '_id'>) => createWaitlist(data),
+    (data: Omit<IWaitlist, '_id'> & { recaptchaKey: string }) => createWaitlist(data),
   );
 
-  const onSubmit = useCallback((data: Omit<IWaitlist, '_id'>) => {
+  const onSubmit = useCallback((data: Omit<IWaitlist, '_id'> & { recaptchaKey: string }) => {
     createWaitlistMutation.mutate(data);
   }, [createWaitlistMutation]);
 
@@ -87,7 +89,12 @@ export const WaitlistForm: FC = () => {
               />
             </div>
           </div>
-          <Button disabled={createWaitlistMutation.isLoading} type="submit">
+          <GoogleReCaptcha
+            onVerify={token => {
+              setValue('recaptchaKey', token);
+            }}
+          />
+          <Button disabled={createWaitlistMutation.isLoading} style={{ marginTop: 8 }} type="submit">
             Add to Waitlist
           </Button>
           {createWaitlistMutation.isError && (
