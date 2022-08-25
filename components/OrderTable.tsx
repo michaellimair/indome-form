@@ -80,7 +80,7 @@ export const OrderTable: FC<{ orders: IOrder[]; token: string; onConfirm: () => 
               HKD {(order.price / 100).toFixed(0)}
             </Table.Cell>
             <Table.Cell>
-              {paymentMethods.find((method) => method.name === order.paymentMethod)?.label} {!!order.paymentProofFileName && (<ExternalLink target="_blank" rel="noopener noreferrer" href={`/api/admin/orders/${order._id}/image?token=${token}`}>Link</ExternalLink>)}
+              {paymentMethods.find((method) => method.name === order.paymentMethod)?.label} {!!order.paymentProofFileName && (<ExternalLink target="_blank" rel="noopener noreferrer" href={`/api/admin/orders/${order._id}/image?token=${order.imageToken}`}>Link</ExternalLink>)}
             </Table.Cell>
             <Table.Cell>
               {order.confirmed ? 'Yes' : 'No'}

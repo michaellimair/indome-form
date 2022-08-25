@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import Order from '../../../../models/Order';
 import dbConnect from '../../../../utils/dbConnect';
 import { timingSafeEqual } from 'crypto';
+import jsonwebtoken from 'jsonwebtoken';
 import { getCompletedQuery, getPendingQuery } from '../../../../utils/db';
 
 const adminSecret = process.env.INDOME_ADMIN_SECRET!;
@@ -36,5 +37,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     sort: ['createdAt']
   });
 
-  res.status(200).json(orders.map((it) => it.toJSON()));
+  res.status(200).json(orders.map((it) => ({
+    ...it.toJSON(),
+    imageToken: jsonwebtoken.sign({
+      sub: it.id
+    }, adminSecret, {
+      expiresIn: '5m',
+      algorithm: 'HS384'
+    })
+  })));
 }
