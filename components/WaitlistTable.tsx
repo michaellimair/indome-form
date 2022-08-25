@@ -22,7 +22,7 @@ export const WaitlistTable: FC<{ waitlist: IWaitlist[] }> = ({ waitlist }) => {
       </Table.Head>
       <Table.Body className="divide-y">
         {waitlist?.map((item, index) => (
-          <Table.Row key={item._id} className={`dark:border-gray-700 ${item.confirmed ? 'bg-green-200' : 'bg-amber-100'}`}>
+          <Table.Row key={item._id} className={`dark:border-gray-700`}>
             <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
               {index + 1}
             </Table.Cell>
