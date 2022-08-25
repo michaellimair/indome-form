@@ -1,13 +1,13 @@
 import { FilterQuery } from "mongoose";
 import { IOrder } from "../global";
 
-export const pendingQuery: FilterQuery<IOrder> = {
+export const getPendingQuery: () => FilterQuery<IOrder> = () => ({
   filled: false,
   expiresAt: {
     $gt: new Date()
   },
-};
+});
 
-export const completedQuery: FilterQuery<IOrder> = {
+export const getCompletedQuery: () => FilterQuery<IOrder> = () => ({
   filled: true,
-};
+});

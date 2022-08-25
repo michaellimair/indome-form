@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import dbConnect from '../../utils/dbConnect';
 import Order from '../../models/Order';
-import { completedQuery, pendingQuery } from '../../utils/db';
+import { getCompletedQuery, getPendingQuery } from '../../utils/db';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'GET') {
@@ -14,8 +14,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const db = await dbConnect();
   const session = await db.startSession();
   await session.withTransaction(async () => {
-    const completedCount = await Order.countDocuments(completedQuery);
-    const pendingCount = await Order.countDocuments(pendingQuery);
+    const completedCount = await Order.countDocuments(getCompletedQuery());
+    const pendingCount = await Order.countDocuments(getPendingQuery());
     const orderCount = pendingCount + completedCount;
     res.status(200).json({
       orderCount,

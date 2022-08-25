@@ -4,7 +4,7 @@ import dbConnect from '../../../../utils/dbConnect';
 import { addMinutes } from 'date-fns';
 import { timingSafeEqual } from 'crypto';
 import { indomeBucket } from '../../../../utils/storage';
-import { completedQuery, pendingQuery } from '../../../../utils/db';
+import { getCompletedQuery, getPendingQuery } from '../../../../utils/db';
 
 const adminSecret = process.env.INDOME_ADMIN_SECRET!;
 
@@ -34,7 +34,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   await dbConnect();
-  const orders = await Order.find(req.query.pending === 'true' ? pendingQuery : completedQuery, undefined, {
+  const orders = await Order.find(req.query.pending === 'true' ? getPendingQuery() : getCompletedQuery(), undefined, {
     sort: ['createdAt']
   });
 
