@@ -20,7 +20,6 @@ const AdminOrdersPage: NextPage = () => {
   }, {
     enabled: !!token,
     retry: false,
-    refetchOnWindowFocus: true,
   });
 
   const { data: pendingOrders, isFetching: isFetchingPendingOrders, isError: isPendingOrdersError, refetch: refetchPending } = useQuery(['admin', 'orders', 'pending', token], () => {
@@ -35,7 +34,6 @@ const AdminOrdersPage: NextPage = () => {
   }, {
     enabled: !!token,
     retry: false,
-    refetchOnWindowFocus: true,
   });
 
   return (
