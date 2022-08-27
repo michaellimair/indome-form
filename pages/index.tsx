@@ -6,11 +6,13 @@ import { CreateOrderSection } from '../components/CreateOrderSection';
 import { EventDescription } from '../components/EventDescription';
 import { PageContainer } from '../components/PageContainer';
 import { WaitlistForm } from '../components/WaitlistForm';
+import { HomeRefreshButton } from '../components/HomeRefreshButton';
 
 const Home: NextPage = () => {
   const status = useQuery(['status'], () => axios.get<{ orderCount: number; available: boolean; finalised: boolean; firstReleaseAvailable: boolean; secondReleaseAvailable: boolean }>('/api/status').then((r) => r.data), {
     cacheTime: 0,
-  })
+  });
+
   return (
     <PageContainer>
       {status.isFetching && (
@@ -24,13 +26,13 @@ const Home: NextPage = () => {
           <CreateOrderSection available={status.data.available} />
         </>
       )}
-      {!status.isFetching && !status?.data?.available && status?.data?.finalised && (
+      {!status.isFetching && !status?.data?.available && !status?.data?.finalised && (
         <div className="flex items-center justify-center flex-col">
           <p className="text-center font-bold pt-4">You are currently in the waitlist to obtain InDome tickets, refresh the status by clicking the button below.</p>
-          <Button style={{ marginTop: 16 }} onClick={() => status.refetch()}>Refresh</Button>
+          <HomeRefreshButton onRefresh={() => status.refetch()} />
         </div>
       )}
-      {!status.isFetching && !status?.data?.available && !status?.data?.finalised && (
+      {!status.isFetching && !status?.data?.available && status?.data?.finalised && (
         <WaitlistForm />
       )}
     </PageContainer>
