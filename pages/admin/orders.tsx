@@ -1,13 +1,12 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { Button, Label, Spinner, Table, TextInput } from "flowbite-react";
+import { Spinner } from "flowbite-react";
 import { NextPage } from "next";
-import { FC, useState } from "react";
-import { ExternalLink } from "../../components/ExternalLink";
+import { useState } from "react";
 import { OrderTable } from "../../components/OrderTable";
 import { TokenInput } from "../../components/TokenInput";
-import { paymentMethods } from "../../constants";
 import { IOrder } from "../../global";
+import { formatCurrency } from "../../utils/currency";
 
 const AdminOrdersPage: NextPage = () => {
   const [token, setToken] = useState<string>();
@@ -54,6 +53,9 @@ const AdminOrdersPage: NextPage = () => {
         )}
         {!isFetching && isError && (
           <p className="text-center text-red-600 font-bold">Unable to fetch list of orders!</p>
+        )}
+        {!isFetching && orders && (
+          <p className="mt-2 font-bold text-right text-xl">Total Revenue: {formatCurrency(orders.reduce<number>((acc, order) => acc + order.price / 100, 0))}</p>
         )}
       </div>
       <h2 className="font-bold mt-2 ml-3">Pending Orders</h2>

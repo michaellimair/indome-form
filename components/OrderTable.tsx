@@ -4,6 +4,7 @@ import { Button, Table } from "flowbite-react";
 import { FC, useState } from "react";
 import { paymentMethods } from "../constants";
 import { IOrder } from "../global";
+import { formatCurrency } from "../utils/currency";
 import { ExternalLink } from "./ExternalLink";
 
 export const OrderTable: FC<{ orders: IOrder[]; token: string; onConfirm: () => void }> = ({ orders, token, onConfirm }) => {
@@ -77,7 +78,7 @@ export const OrderTable: FC<{ orders: IOrder[]; token: string; onConfirm: () => 
               {!!order.email && <ExternalLink target="_blank" rel="noopener noreferrer" href={`mailto:${order.email}`}>{order.email}</ExternalLink>}
             </Table.Cell>
             <Table.Cell>
-              HKD {(order.price / 100).toFixed(0)}
+              {formatCurrency(order.price / 100)}
             </Table.Cell>
             <Table.Cell>
               {paymentMethods.find((method) => method.name === order.paymentMethod)?.label} {!!order.paymentProofFileName && (<ExternalLink target="_blank" rel="noopener noreferrer" href={`/api/admin/orders/${order._id}/image?token=${order.imageToken}`}>Link</ExternalLink>)}
