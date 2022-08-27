@@ -29,7 +29,7 @@ export const EventDescription: FC<{
 
       <p className="font-bold">* Places are limited, so grab your spot fast! Your price will be allocated automatically on a first-come-first-serve basis.</p>
       <p>** You must provide a negative RAT result and be vaccinated three times in order to enter the venue. Failure to present a vaccination record will result in being denied entry and no refund will be provided.</p>
-      <p>*** Due to the limit of venue capacity, we do not accept any walk-ins for this event.</p>
+      <p>*** Due to the limited venue capacity, we do not accept any walk-ins for this event.</p>
     </div>
   );
 }
