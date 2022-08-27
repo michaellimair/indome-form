@@ -14,7 +14,7 @@ export const HomeRefreshButton: FC<{ onRefresh: () => void }> = ({
       if (diff <= 0) {
         onRefresh();
       }
-      setTimeDisplay(`${diff} seconds`)
+      setTimeDisplay(`${diff} ${diff > 1 ? 'seconds' : 'second'}`)
     }, 100);
 
     return () => clearInterval(interval);
