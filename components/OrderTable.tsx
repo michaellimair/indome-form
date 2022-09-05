@@ -4,6 +4,7 @@ import { Button, Table } from "flowbite-react";
 import { FC, useState } from "react";
 import { paymentMethods } from "../constants";
 import { IOrder } from "../global";
+import { exportOrdersToExcel } from "../utils/excel";
 import { ExternalLink } from "./ExternalLink";
 
 export const OrderTable: FC<{ orders: IOrder[]; token: string; onConfirm: () => void }> = ({ orders, token, onConfirm }) => {
@@ -30,72 +31,81 @@ export const OrderTable: FC<{ orders: IOrder[]; token: string; onConfirm: () => 
     }
   });
 
+  const downloadMutation = useMutation(['admin', 'orders', 'download'], () => exportOrdersToExcel(orders))
+
   return (
-    <Table>
-      <Table.Head>
-        <Table.HeadCell>
-          No
-        </Table.HeadCell>
-        <Table.HeadCell>
-          Name
-        </Table.HeadCell>
-        <Table.HeadCell>
-          Phone
-        </Table.HeadCell>
-        <Table.HeadCell>
-          Email
-        </Table.HeadCell>
-        <Table.HeadCell>
-          Price
-        </Table.HeadCell>
-        <Table.HeadCell>
-          Payment Method
-        </Table.HeadCell>
-        <Table.HeadCell>
-          Confirmed
-        </Table.HeadCell>
-        <Table.HeadCell>
-          {/* @ts-ignore */}
-          <span className="sr-only">
-            Confirm
-          </span>
-        </Table.HeadCell>
-      </Table.Head>
-      <Table.Body className="divide-y">
-        {orders?.map((order, index) => (
-          <Table.Row key={order._id} className={`dark:border-gray-700 ${order.confirmed ? 'bg-green-200' : 'bg-amber-100'}`}>
-            <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-              {index + 1}
-            </Table.Cell>
-            <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-              {order.name}
-            </Table.Cell>
-            <Table.Cell>
-              {order.phone} {!!order.phone && (<ExternalLink target="_blank" rel="noopener noreferrer" href={`https://wa.me/${order.phone.replace('+', '')}`}>WhatsApp</ExternalLink>)}
-            </Table.Cell>
-            <Table.Cell>
-              {!!order.email && <ExternalLink target="_blank" rel="noopener noreferrer" href={`mailto:${order.email}`}>{order.email}</ExternalLink>}
-            </Table.Cell>
-            <Table.Cell>
-              HKD {(order.price / 100).toFixed(0)}
-            </Table.Cell>
-            <Table.Cell>
-              {paymentMethods.find((method) => method.name === order.paymentMethod)?.label} {!!order.paymentProofFileName && (<ExternalLink target="_blank" rel="noopener noreferrer" href={`/api/admin/orders/${order._id}/image?token=${order.imageToken}`}>Link</ExternalLink>)}
-            </Table.Cell>
-            <Table.Cell>
-              {order.confirmed ? 'Yes' : 'No'}
-            </Table.Cell>
-            <Table.Cell>
-              {<Button
-                disabled={(confirmOrderMutation.isLoading && mutatingList.has(order._id)) || !order.filled}
-                onClick={() => confirmOrderMutation.mutate(order._id)}
-              >
-                {order.confirmed ? 'Resend Email' : 'Confirm'}
-              </Button>}
-            </Table.Cell>
-          </Table.Row>
-        ))}
-      </Table.Body>
-    </Table>
+    <>
+      <div className="mb-4">
+        <Button color="success" disabled={downloadMutation.isLoading} onClick={() => downloadMutation.mutate()}>
+          Export to Excel
+        </Button>
+      </div>
+      <Table>
+        <Table.Head>
+          <Table.HeadCell>
+            No
+          </Table.HeadCell>
+          <Table.HeadCell>
+            Name
+          </Table.HeadCell>
+          <Table.HeadCell>
+            Phone
+          </Table.HeadCell>
+          <Table.HeadCell>
+            Email
+          </Table.HeadCell>
+          <Table.HeadCell>
+            Price
+          </Table.HeadCell>
+          <Table.HeadCell>
+            Payment Method
+          </Table.HeadCell>
+          <Table.HeadCell>
+            Confirmed
+          </Table.HeadCell>
+          <Table.HeadCell>
+            {/* @ts-ignore */}
+            <span className="sr-only">
+              Confirm
+            </span>
+          </Table.HeadCell>
+        </Table.Head>
+        <Table.Body className="divide-y">
+          {orders?.map((order, index) => (
+            <Table.Row key={order._id} className={`dark:border-gray-700 ${order.confirmed ? 'bg-green-200' : 'bg-amber-100'}`}>
+              <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                {index + 1}
+              </Table.Cell>
+              <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                {order.name}
+              </Table.Cell>
+              <Table.Cell>
+                {order.phone} {!!order.phone && (<ExternalLink target="_blank" rel="noopener noreferrer" href={`https://wa.me/${order.phone.replace('+', '')}`}>WhatsApp</ExternalLink>)}
+              </Table.Cell>
+              <Table.Cell>
+                {!!order.email && <ExternalLink target="_blank" rel="noopener noreferrer" href={`mailto:${order.email}`}>{order.email}</ExternalLink>}
+              </Table.Cell>
+              <Table.Cell>
+                HKD {(order.price / 100).toFixed(0)}
+              </Table.Cell>
+              <Table.Cell>
+                {paymentMethods.find((method) => method.name === order.paymentMethod)?.label} {!!order.paymentProofFileName && (<ExternalLink target="_blank" rel="noopener noreferrer" href={`/api/admin/orders/${order._id}/image?token=${order.imageToken}`}>Link</ExternalLink>)}
+              </Table.Cell>
+              <Table.Cell>
+                {order.confirmed ? 'Yes' : 'No'}
+              </Table.Cell>
+              <Table.Cell>
+                {<Button
+                  disabled={(confirmOrderMutation.isLoading && mutatingList.has(order._id)) || !order.filled}
+                  onClick={() => confirmOrderMutation.mutate(order._id)}
+                >
+                  {order.confirmed ? 'Resend Email' : 'Confirm'}
+                </Button>}
+              </Table.Cell>
+            </Table.Row>
+          ))}
+        </Table.Body>
+      </Table>
+    </>
   );
 }
