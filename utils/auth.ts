@@ -2,6 +2,10 @@ import { timingSafeEqual } from 'crypto';
 import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next';
 import { adminSecret } from '../constants';
 
+if (!adminSecret) {
+  throw new Error('Admin secret not in environment variable!');
+}
+
 export const withAuthentication = (handler: NextApiHandler) => (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== 'GET') {
     res.status(405).json({

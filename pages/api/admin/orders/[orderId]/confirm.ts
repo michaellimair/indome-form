@@ -1,17 +1,9 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { isAfter } from 'date-fns';
-import { pick } from 'lodash';
 import dbConnect from '../../../../../utils/dbConnect';
 import Order from '../../../../../models/Order';
 import GoogleClient from '../../../../../utils/google';
 import { IOrder } from '../../../../../global';
-import { timingSafeEqual } from 'crypto';
-
-const adminSecret = process.env.INDOME_ADMIN_SECRET!;
-
-if (!adminSecret) {
-  throw new Error('Admin secret not in environment variable!');
-}
+import { withAuthentication } from '../../../../../utils/auth';
 
 const getMailBody = (order: IOrder) => `
 <!DOCTYPE html>
@@ -266,27 +258,7 @@ const getMailBody = (order: IOrder) => `
 </html>
 `;
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (req?.method?.toLowerCase() !== 'post') {
-    res.status(405).json({
-      message: 'Method not allowed!',
-    });
-    return;  
-  }
-
-  const authHeader = req.headers.authorization?.replace('Bearer ', '') ?? '';
-
-  const passLength = adminSecret.length;
-
-  const isAuthenticated = timingSafeEqual(Buffer.from(authHeader.padStart(passLength, '0')), Buffer.from(adminSecret));
-
-  if (!isAuthenticated) {
-    res.status(401).json({
-      message: 'Unauthorised!',
-    });
-    return;
-  }
-
+const handler = withAuthentication(async (req: NextApiRequest, res: NextApiResponse) => {
   await dbConnect();
 
   const orderId = req.query.orderId;
@@ -319,4 +291,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   });
 
   res.status(200).json(order.toJSON());
-}
+});
+
+export default handler;

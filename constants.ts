@@ -60,7 +60,3 @@ I will be able to present my identity and proof of vaccination upon entry.
 I understand that failure to do so will result in being denied entry and no refund will be provided.`;
 
 export const adminSecret = process.env.INDOME_ADMIN_SECRET!;
-
-if (!adminSecret && typeof window === 'undefined') {
-  throw new Error('Admin secret not in environment variable!');
-}
