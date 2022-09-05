@@ -5,6 +5,7 @@ import { FC, useState } from "react";
 import { paymentMethods } from "../constants";
 import { IOrder } from "../global";
 import { exportOrdersToExcel } from "../utils/excel";
+import { formatCurrency } from "../utils/currency";
 import { ExternalLink } from "./ExternalLink";
 
 export const OrderTable: FC<{ orders: IOrder[]; token: string; onConfirm: () => void }> = ({ orders, token, onConfirm }) => {

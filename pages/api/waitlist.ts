@@ -11,25 +11,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     });
     return;
   }
-
-  const recaptchaKey = req.body.recaptchaKey;
-
-  if (!recaptchaKey) {
-    res.status(403).json({
-      message: 'Forbidden!',
-    });
-    return;
-  }
-
-  const captchaVerified = await verifyCaptcha(recaptchaKey);
-
-  if (!captchaVerified) {
-    res.status(403).json({
-      message: 'Captcha validation failed!',
-    });
-    return;
-  }
-
   await dbConnect();
   const waitlist = await Waitlist.create(pick(req.body, ['name', 'phone', 'email']))
 

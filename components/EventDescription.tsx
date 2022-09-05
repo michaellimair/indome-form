@@ -25,12 +25,11 @@ export const EventDescription: FC<{
         <li><span className={!firstReleaseAvailable ? 'line-through' : ''}>First Release (limited tickets): 200 HKD</span> {!firstReleaseAvailable && <b>SOLD OUT</b>}</li>
         <li><span className={!secondReleaseAvailable ? 'line-through' : ''}>Second Release (limited tickets): 225 HKD</span> {!secondReleaseAvailable && <b>SOLD OUT</b>}</li>
         <li><span className={!available ? 'line-through' : ''}>Final Release: 250 HKD</span> {!available && <b>SOLD OUT</b>}</li>
-        <li><span className={!available ? 'line-through' : ''}>Walk In: 300 HKD</span> {!available && <b>No more walk-in spots available!</b>}</li>
       </ul>
 
       <p className="font-bold">* Places are limited, so grab your spot fast! Your price will be allocated automatically on a first-come-first-serve basis.</p>
       <p>** You must provide a negative RAT result and be vaccinated three times in order to enter the venue. Failure to present a vaccination record will result in being denied entry and no refund will be provided.</p>
-      <p>*** Walk-in starts from 6:00pm. For those who <b>registered online</b>, we <b>cannot guarantee your spot after 6:00 pm</b> as places are limited.</p>
+      <p>*** Due to the limited venue capacity, we do not accept any walk-ins for this event.</p>
     </div>
   );
 }
