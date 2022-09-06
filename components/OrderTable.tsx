@@ -5,13 +5,34 @@ import { FC, useState } from "react";
 import { paymentMethods } from "../constants";
 import { IOrder } from "../global";
 import { exportOrdersToExcel } from "../utils/excel";
-import { formatCurrency } from "../utils/currency";
 import { ExternalLink } from "./ExternalLink";
 
 export const OrderTable: FC<{ orders: IOrder[]; token: string; onConfirm: () => void }> = ({ orders, token, onConfirm }) => {
   const [mutatingList, setMutatingList] = useState<Set<string>>(new Set<string>());
   const confirmOrderMutation = useMutation(['admin', 'orders', 'confirm', token], async (orderId: string) => {
     await axios.post(`/api/admin/orders/${orderId}/confirm`, {}, {
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
+    });
+    onConfirm();
+  }, {
+    onMutate: (orderId) => {
+      setMutatingList((l) => {
+        l.add(orderId);
+        return l;
+      });
+    },
+    onSettled: (_, __, orderId) => {
+      setMutatingList((l) => {
+        l.delete(orderId);
+        return l;
+      });
+    }
+  });
+
+  const resendTicketMutation = useMutation(['admin', 'orders', 'resend-ticket', token], async (orderId: string) => {
+    await axios.post(`/api/admin/orders/${orderId}/resend-ticket`, {}, {
       headers: {
         authorization: `Bearer ${token}`,
       },
@@ -61,13 +82,19 @@ export const OrderTable: FC<{ orders: IOrder[]; token: string; onConfirm: () => 
           <Table.HeadCell>
             Payment Method
           </Table.HeadCell>
-          <Table.HeadCell>
+          {/* <Table.HeadCell>
             Confirmed
+          </Table.HeadCell> */}
+          <Table.HeadCell>
+            {/* @ts-ignore */}
+            <span className="sr-only">
+              Confirm or Resend Confirmation
+            </span>
           </Table.HeadCell>
           <Table.HeadCell>
             {/* @ts-ignore */}
             <span className="sr-only">
-              Confirm
+              Resend Ticket
             </span>
           </Table.HeadCell>
         </Table.Head>
@@ -92,16 +119,25 @@ export const OrderTable: FC<{ orders: IOrder[]; token: string; onConfirm: () => 
               <Table.Cell>
                 {paymentMethods.find((method) => method.name === order.paymentMethod)?.label} {!!order.paymentProofFileName && (<ExternalLink target="_blank" rel="noopener noreferrer" href={`/api/admin/orders/${order._id}/image?token=${order.imageToken}`}>Link</ExternalLink>)}
               </Table.Cell>
-              <Table.Cell>
+              {/* <Table.Cell>
                 {order.confirmed ? 'Yes' : 'No'}
-              </Table.Cell>
+              </Table.Cell> */}
               <Table.Cell>
-                {<Button
+                <Button
                   disabled={(confirmOrderMutation.isLoading && mutatingList.has(order._id)) || !order.filled}
                   onClick={() => confirmOrderMutation.mutate(order._id)}
                 >
-                  {order.confirmed ? 'Resend Email' : 'Confirm'}
-                </Button>}
+                  {order.confirmed ? 'Resend Confirmation' : 'Confirm'}
+                </Button>
+              </Table.Cell>
+              <Table.Cell>
+                <Button
+                  color="success"
+                  disabled={(resendTicketMutation.isLoading && mutatingList.has(order._id)) || !order.filled}
+                  onClick={() => resendTicketMutation.mutate(order._id)}
+                >
+                  Resend Ticket
+                </Button>
               </Table.Cell>
             </Table.Row>
           ))}

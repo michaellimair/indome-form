@@ -7,13 +7,6 @@ if (!adminSecret) {
 }
 
 export const withAuthentication = (handler: NextApiHandler) => (req: NextApiRequest, res: NextApiResponse) => {
-  if (req.method !== 'GET') {
-    res.status(405).json({
-      message: 'Method not allowed!',
-    });
-    return;
-  }
-
   const authHeader = req.headers.authorization?.replace('Bearer ', '') ?? '';
 
   const maxLength = Math.max(adminSecret.length, authHeader.length);

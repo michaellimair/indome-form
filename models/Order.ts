@@ -1,4 +1,5 @@
 import mongoose, { Model } from 'mongoose';
+import jsonwebtoken from 'jsonwebtoken';
 import { IOrder } from '../global';
 
 const OrderSchema = new mongoose.Schema<IOrder>({
@@ -31,7 +32,7 @@ const OrderSchema = new mongoose.Schema<IOrder>({
   price: Number,
 }, {
   timestamps: true,
-})
+});
 
 const Order = mongoose.models.Order as Model<IOrder> || mongoose.model<IOrder>('Order', OrderSchema);
 
