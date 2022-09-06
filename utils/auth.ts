@@ -9,8 +9,6 @@ if (!adminSecret) {
 export const withAuthentication = (handler: NextApiHandler) => (req: NextApiRequest, res: NextApiResponse) => {
   const authHeader = req.headers.authorization?.replace('Bearer ', '') ?? '';
 
-  console.log(req.headers.authorization)
-
   const maxLength = Math.max(adminSecret.length, authHeader.length);
 
   const isAuthenticated = timingSafeEqual(Buffer.from(authHeader.padStart(maxLength, '0')), Buffer.from(adminSecret.padStart(maxLength, '0')));

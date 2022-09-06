@@ -22,7 +22,6 @@ const handler = withAuthentication(async (req: NextApiRequest, res: NextApiRespo
     const verified = jsonwebtoken.verify(code, process.env.JWT_SECRET!, {
       algorithms: ['HS256'],
     }) as jsonwebtoken.JwtPayload;
-    console.log(verified.iss)
     if (verified.iss !== 'indome') {
       throw new Error();
     }
