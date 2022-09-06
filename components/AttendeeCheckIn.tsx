@@ -11,7 +11,7 @@ export const AttendeeCheckIn: FC<{ code: string; clearCode: () => void; token: s
 }) => {
   const { data: order, isFetching, refetch } = useQuery(['order', 'qr-lookup', code], () => {
     return axios.post<IOrder>('/api/admin/orders/qr-lookup', { code }, {
-      headers: { Authorization: `Bearer ${token}` }
+      headers: { authorization: `Bearer ${token}` }
     }).then((r) => r.data);
   }, {
     cacheTime: 0,
@@ -22,7 +22,7 @@ export const AttendeeCheckIn: FC<{ code: string; clearCode: () => void; token: s
       throw new Error();
     }
     return axios.post<IOrder>(`/api/admin/orders/${order!._id}/checkin`, { code }, {
-      headers: { Authorization: `Bearer ${token}` }
+      headers: { authorization: `Bearer ${token}` }
     }).then((r) => r.data);
   }, {
     cacheTime: 0,
