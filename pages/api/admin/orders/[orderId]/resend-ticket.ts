@@ -14,6 +14,7 @@ const getMailBody = async (order: IOrder) => {
     name: order.name
   }, process.env.JWT_SECRET!, {
     expiresIn: '30d',
+    issuer: 'indome',
     algorithm: 'HS256',
   });
 
