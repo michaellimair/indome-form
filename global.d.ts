@@ -23,6 +23,7 @@ export interface IOrder {
   paymentProofFileName: string;
   price: number;
   imageToken?: string;
+  checkedIn?: boolean;
 }
 
 export interface IWaitlist {

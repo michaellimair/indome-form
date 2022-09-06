@@ -30,6 +30,10 @@ const OrderSchema = new mongoose.Schema<IOrder>({
   paymentMethod: String,
   paymentProofFileName: String,
   price: Number,
+  checkedIn: {
+    type: Boolean,
+    default: false,
+  },
 }, {
   timestamps: true,
 });
