@@ -239,6 +239,7 @@ const getMailBody = async (order: IOrder) => {
     <li style="margin-bottom: 0px;">You must be 18 or above on the day of the event.</li>
     <li style="margin-bottom: 0px;">On the day of the event, you must present a RAT test and a vaccine pass with "Blue Code" status in the LeaveHomeSafe app. As such, attendees have to be fully vaccinated according to the <a href="https://www.coronavirus.gov.hk/pdf/vp_t1_ENG.pdf" rel="noopener" style="text-decoration: underline; color: #0068a5;" target="_blank">prevailing requirements of the HKSAR government</a>.</li>
     <li>Failure to fulfill the above requirements will result in being denied entry and no refund will be given.</li>
+    <li><b>The QR code above is valid for one person.</b> If you wish to transfer your ticket, you may <b>forward this email</b> to the intended recipient.</li>
     </ul>
     </td>
     </tr>
