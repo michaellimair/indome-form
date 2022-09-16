@@ -176,7 +176,7 @@ const getMailBody = async (order: IOrder) => {
     <div style="color:#000000;font-size:14px;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-weight:400;line-height:120%;text-align:left;direction:ltr;letter-spacing:0px;mso-line-height-alt:16.8px;">
     <p style="margin: 0; margin-bottom: 16px;">Hi ${order.name},</p>
     <p style="margin: 0;">It’s T-1 day to InDome Roof Rave!</p>
-    <p style="margin: 0;">Below is the QR code for your reservation to the event:</p>
+    <p style="margin: 0;">Below is the QR code for your reservation to the event, please present it upon entry:</p>
     <p style="margin: 0; text-align: center; margin-top: 16px; margin-bottom: 16px;"><img src="cid:qrImage" alt="QR Code for User ${order._id}" style="height: 400px; width: 400px"></p>
     </div>
     </td>
