@@ -1,7 +1,7 @@
 import { gmail_v1, google } from 'googleapis';
 import { GaxiosResponse } from "gaxios";
 import { OAuth2Client } from 'google-auth-library';
-import Mail from 'nodemailer/lib/mailer';
+import Mail, { Attachment } from 'nodemailer/lib/mailer';
 import { makeBody } from './mail';
 const OAuth2 = google.auth.OAuth2;
 
@@ -12,6 +12,7 @@ export interface IMailData {
   to: string;
   subject: string;
   body: string;
+  attachments?: Attachment[];
 }
 
 export interface IInvitationMailData {
@@ -70,13 +71,14 @@ class GoogleClient {
     });
   }
 
-  async sendMail({ from, to, subject, body }: IMailData) {
+  async sendMail({ from, to, subject, body, attachments }: IMailData) {
     await this.setAccessToken();
     const contents = await makeBody({
       from: from ?? defaultSenderName,
       to,
       subject,
       body,
+      attachments,
     });
     await this.sendGmailMessage(contents);
   }

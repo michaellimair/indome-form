@@ -17,7 +17,12 @@ const handler = withAuthentication(async (req: NextApiRequest, res: NextApiRespo
     return;
   }
 
-  res.status(200).json(order.toJSON());
+  if (req.method?.toLowerCase() === 'get') {
+    res.status(200).json(order.toJSON());
+  } else if (req.method?.toLowerCase() === 'delete') {
+    await order.delete();
+    res.status(204).end();
+  }
 });
 
 export default handler;

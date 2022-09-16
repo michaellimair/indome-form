@@ -9,8 +9,31 @@ import { ExternalLink } from "./ExternalLink";
 
 export const OrderTable: FC<{ orders: IOrder[]; token: string; onConfirm: () => void }> = ({ orders, token, onConfirm }) => {
   const [mutatingList, setMutatingList] = useState<Set<string>>(new Set<string>());
+  const [progress, setProgress] = useState<number>();
   const confirmOrderMutation = useMutation(['admin', 'orders', 'confirm', token], async (orderId: string) => {
     await axios.post(`/api/admin/orders/${orderId}/confirm`, {}, {
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
+    });
+    onConfirm();
+  }, {
+    onMutate: (orderId) => {
+      setMutatingList((l) => {
+        l.add(orderId);
+        return l;
+      });
+    },
+    onSettled: (_, __, orderId) => {
+      setMutatingList((l) => {
+        l.delete(orderId);
+        return l;
+      });
+    }
+  });
+
+  const deleteTicketMutation = useMutation(['admin', 'orders', 'delete', token], async (orderId: string) => {
+    await axios.delete(`/api/admin/orders/${orderId}`, {
       headers: {
         authorization: `Bearer ${token}`,
       },
@@ -53,15 +76,44 @@ export const OrderTable: FC<{ orders: IOrder[]; token: string; onConfirm: () => 
     }
   });
 
+  const sendAllTicketsMutation = useMutation(['admin', 'orders', 'send-all-tickets', token], async () => {
+    for (let i = 0; i < orders.length; i++) {
+      const order = orders[i];
+      setProgress(i + 1);
+      await axios.post(`/api/admin/orders/${order._id}/resend-ticket`, {}, {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      });
+    }
+    onConfirm();
+  }, {
+    onMutate: () => {
+      setMutatingList(new Set<string>((orders as IOrder[]).map((order) => order._id)));
+    },
+    onSettled: () => {
+      setMutatingList(new Set<string>());
+      setProgress(undefined);
+    }
+  });
+
   const downloadMutation = useMutation(['admin', 'orders', 'download'], () => exportOrdersToExcel(orders))
 
   return (
     <>
-      <div className="mb-4">
+      <div className="mb-4 flex flex-row">
         <Button color="success" disabled={downloadMutation.isLoading} onClick={() => downloadMutation.mutate()}>
           Export to Excel
         </Button>
+        <Button style={{ marginLeft: 16 }} disabled={downloadMutation.isLoading} onClick={() => downloadMutation.mutate()}>
+          Send All Tickets
+        </Button>
       </div>
+      {sendAllTicketsMutation.isLoading && (
+        <div>
+          <p>Sending ticket email {progress}/{orders.length}</p>
+        </div>
+      )}
       <Table>
         <Table.Head>
           <Table.HeadCell>
@@ -122,6 +174,19 @@ export const OrderTable: FC<{ orders: IOrder[]; token: string; onConfirm: () => 
               {/* <Table.Cell>
                 {order.confirmed ? 'Yes' : 'No'}
               </Table.Cell> */}
+              <Table.Cell>
+                <Button
+                  disabled={(deleteTicketMutation.isLoading && mutatingList.has(order._id)) || !order.filled}
+                  onClick={() => {
+                    if (window.confirm(`Are you sure you want to delete the ticket of ${order.name}?`)) {
+                      deleteTicketMutation.mutate(order._id)
+                    }
+                  }}
+                  color="failure"
+                >
+                  Delete Ticket
+                </Button>
+              </Table.Cell>
               <Table.Cell>
                 <Button
                   disabled={(confirmOrderMutation.isLoading && mutatingList.has(order._id)) || !order.filled}

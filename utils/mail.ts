@@ -1,16 +1,19 @@
 import MailComposer from "nodemailer/lib/mail-composer";
+import { Attachment } from "nodemailer/lib/mailer";
 
-export const makeBody = ({from, to, body, subject}: {
+export const makeBody = ({from, to, body, subject, attachments}: {
   from: string;
   to: string;
   body: string;
   subject: string;
+  attachments?: Attachment[];
 }) => {
   let mail = new MailComposer({
     to: to,
     from: from,
     html: body,
     subject: subject,
+    attachments,
     textEncoding: "base64",
   });
   
