@@ -105,7 +105,7 @@ export const OrderTable: FC<{ orders: IOrder[]; token: string; onConfirm: () => 
         <Button color="success" disabled={downloadMutation.isLoading} onClick={() => downloadMutation.mutate()}>
           Export to Excel
         </Button>
-        <Button style={{ marginLeft: 16 }} disabled={downloadMutation.isLoading} onClick={() => downloadMutation.mutate()}>
+        <Button style={{ marginLeft: 16 }} disabled={sendAllTicketsMutation.isLoading} onClick={() => sendAllTicketsMutation.mutate()}>
           Send All Tickets
         </Button>
       </div>
