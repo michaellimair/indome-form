@@ -25,6 +25,7 @@ export const AttendeeManualCheckIn: FC<{ resetData: () => void; token: string; e
   }, {
     cacheTime: 0,
     enabled: !!email || !!phone,
+    retry: false,
   });
 
   return (

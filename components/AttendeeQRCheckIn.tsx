@@ -16,6 +16,7 @@ export const AttendeeQRCheckIn: FC<{ code?: string; clearCode: () => void; token
   }, {
     cacheTime: 0,
     enabled: !!code,
+    retry: false,
   });
 
   return (
