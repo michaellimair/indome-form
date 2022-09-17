@@ -52,7 +52,7 @@ export const AttendeeCheckInModal: FC<{ order?: IOrder; onCheckIn: () => any; on
         )}
         {!isLoadingAttendee && !order && (
           <Alert
-            color="error"
+            color="failure"
           >
             <span>
               <span className="font-medium">
@@ -64,15 +64,17 @@ export const AttendeeCheckInModal: FC<{ order?: IOrder; onCheckIn: () => any; on
         {!!order && (
           <>
             {order.checkedIn && !isSuccess && (
-              <Alert
-                color="warning"
-              >
-                <span>
-                  <span className="font-medium">
-                    This user has previously checked in! Please manually verify their identity to continue.
+              <div className="mb-4">
+                <Alert
+                  color="warning"
+                >
+                  <span>
+                    <span className="font-medium">
+                      This user has previously checked in! Please manually verify their identity to continue.
+                    </span>
                   </span>
-                </span>
-              </Alert>
+                </Alert>
+              </div>
             )}
             {isSuccess && (
               <div className="mb-4">
