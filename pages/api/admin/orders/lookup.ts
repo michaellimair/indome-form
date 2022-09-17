@@ -29,11 +29,11 @@ const handler = withAuthentication(async (req: NextApiRequest, res: NextApiRespo
   }
 
   if (email) {
-    order = await Order.findOne({ email });
+    order = await Order.findOne({ email, confirmed: true });
   }
 
   if (phone) {
-    order = await Order.findOne({ phone });
+    order = await Order.findOne({ phone, confirmed: true });
   }
 
   if (!order) {
