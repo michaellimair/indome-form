@@ -4,7 +4,7 @@ import { Alert, Button, Spinner, Modal } from "flowbite-react";
 import { FC, useCallback, useEffect } from "react";
 import { IOrder } from "../global";
 
-export const AttendeeCheckInModal: FC<{ order?: IOrder; onCheckIn: () => any; onDismiss: () => void; token: string; show: boolean; isLoadingAttendee: boolean; refetch: () => void }> = ({
+export const AttendeeCheckInModal: FC<{ order?: IOrder; onCheckIn: () => any; onDismiss: () => void; token: string; show: boolean; isLoadingAttendee: boolean; refetch: () => void; errorMessage: string }> = ({
   order,
   onCheckIn,
   onDismiss,
@@ -12,6 +12,7 @@ export const AttendeeCheckInModal: FC<{ order?: IOrder; onCheckIn: () => any; on
   show,
   isLoadingAttendee,
   refetch,
+  errorMessage,
 }) => {
   const { isLoading: isCheckingIn, mutate, isSuccess, reset } = useMutation(['order', 'checkin', order?._id], async () => {
     if (!order) {
@@ -56,7 +57,7 @@ export const AttendeeCheckInModal: FC<{ order?: IOrder; onCheckIn: () => any; on
           >
             <span>
               <span className="font-medium">
-                Unable to fetch order from the provided QR code!
+                {errorMessage}
               </span>
             </span>
           </Alert>

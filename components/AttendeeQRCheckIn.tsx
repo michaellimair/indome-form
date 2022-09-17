@@ -26,6 +26,7 @@ export const AttendeeQRCheckIn: FC<{ code?: string; clearCode: () => void; token
       onCheckIn={refetch}
       token={token}
       order={order}
+      errorMessage="Unable to fetch order from the provided QR code!"
       isLoadingAttendee={isLoadingAttendee}
       refetch={refetch}
     />

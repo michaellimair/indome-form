@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { FC } from "react";
+import { FC, useMemo } from "react";
 import { IOrder } from "../global";
 import { AttendeeCheckInModal } from "./AttendeeCheckInModal";
 
@@ -28,6 +28,16 @@ export const AttendeeManualCheckIn: FC<{ resetData: () => void; token: string; e
     retry: false,
   });
 
+  const inputData = useMemo(() => {
+    if (email) {
+      return `Email: ${email}`;
+    }
+    if (phone) {
+      return `Phone: ${phone}`;
+    }
+    return '';
+  }, [email, phone]);
+
   return (
     <AttendeeCheckInModal
       onDismiss={resetData}
@@ -35,6 +45,7 @@ export const AttendeeManualCheckIn: FC<{ resetData: () => void; token: string; e
       onCheckIn={refetch}
       token={token}
       order={order}
+      errorMessage={`Unable to fetch order from the provided input (${inputData})!`}
       isLoadingAttendee={isLoadingAttendee}
       refetch={refetch}
     />
