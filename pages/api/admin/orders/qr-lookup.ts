@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import jsonwebtoken from 'jsonwebtoken';
+import { Types } from "mongoose";
 import Order from "../../../../models/Order";
 import { withAuthentication } from "../../../../utils/auth";
 import dbConnect from "../../../../utils/dbConnect";
@@ -35,8 +36,8 @@ const handler = withAuthentication(async (req: NextApiRequest, res: NextApiRespo
   }
 
   const order = await Order.findOne({
-    _id: orderId,
-    checkedIn: true,
+    _id: new Types.ObjectId(orderId),
+    confirmed: true,
   });
 
   if (!order) {
