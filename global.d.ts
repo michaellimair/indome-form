@@ -7,6 +7,11 @@ declare global {
   };
 }
 
+export interface IStatistics {
+  totalAttendees: number;
+  checkedInAttendees: number;
+}
+
 export interface IOrder {
   _id: string;
   name: string;
