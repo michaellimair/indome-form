@@ -15,7 +15,7 @@ export const AttendeeManualCheckIn: FC<{ resetData: () => void; token: string; e
     if (phone && phone.length === 8) {
       params.phone = `+852${phone.trim()}`;
     } else if (phone) {
-      params.phone = phone.trim();
+      params.phone = phone.startsWith('+') ? phone.trim() : `+${phone.trim()}`;
     } else if (email) {
       params.email = email.trim();
     }
