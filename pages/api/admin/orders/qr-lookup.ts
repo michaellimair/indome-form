@@ -34,7 +34,8 @@ const handler = withAuthentication(async (req: NextApiRequest, res: NextApiRespo
     return;
   }
 
-  const order = await Order.findById(orderId, {
+  const order = await Order.findOne({
+    _id: orderId,
     checkedIn: true,
   });
 
