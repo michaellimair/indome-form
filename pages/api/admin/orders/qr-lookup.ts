@@ -21,7 +21,7 @@ const handler = withAuthentication(async (req: NextApiRequest, res: NextApiRespo
   try {
     const code = req.body.code;
     const verified = jsonwebtoken.verify(code, process.env.JWT_SECRET!, {
-      algorithms: ['HS256'],
+      algorithms: ['HS384'],
     }) as jsonwebtoken.JwtPayload;
     if (verified.iss !== 'indome') {
       throw new Error();

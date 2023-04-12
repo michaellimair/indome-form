@@ -3,16 +3,23 @@ import Order from '../../../../../models/Order';
 import dbConnect from '../../../../../utils/dbConnect';
 import { addMinutes } from 'date-fns';
 import { indomeBucket } from '../../../../../utils/storage';
-import { withAuthentication } from '../../../../../utils/auth';
+import jsonwebtoken from 'jsonwebtoken';
 
-const handler = withAuthentication(async (req: NextApiRequest, res: NextApiResponse) => {
+const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   await dbConnect();
-  const order = await Order.findById(req.query.orderId);
+  const token = req.query.token;
+
+  const verified = jsonwebtoken.verify(token as string, process.env.JWT_SECRET!, {
+    algorithms: ['HS384'],
+  }) as jsonwebtoken.JwtPayload;
+
+  const order = await Order.findById(verified.sub!);
 
   if (!order || !order.paymentProofFileName) {
     res.status(404).json({
       message: 'Not Found!',
     });
+    return;
   }
 
   const [url] = await indomeBucket.file(order!.paymentProofFileName).getSignedUrl({
@@ -22,6 +29,6 @@ const handler = withAuthentication(async (req: NextApiRequest, res: NextApiRespo
   });
 
   res.redirect(url);
-});
+};
 
 export default handler;

@@ -4,7 +4,6 @@ import dbConnect from '../../../../utils/dbConnect';
 import jsonwebtoken from 'jsonwebtoken';
 import { getCompletedQuery, getPendingQuery } from '../../../../utils/db';
 import { withAuthentication } from '../../../../utils/auth';
-import { adminSecret } from '../../../../constants';
 
 const handler = withAuthentication(async (req: NextApiRequest, res: NextApiResponse) => {
   await dbConnect();
@@ -16,7 +15,7 @@ const handler = withAuthentication(async (req: NextApiRequest, res: NextApiRespo
     ...it.toJSON(),
     imageToken: jsonwebtoken.sign({
       sub: it.id
-    }, adminSecret, {
+    }, process.env.JWT_SECRET!, {
       expiresIn: '5m',
       algorithm: 'HS384'
     })

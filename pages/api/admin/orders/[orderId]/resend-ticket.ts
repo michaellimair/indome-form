@@ -15,7 +15,7 @@ const getMailBody = async (order: IOrder) => {
   }, process.env.JWT_SECRET!, {
     expiresIn: '30d',
     issuer: 'indome',
-    algorithm: 'HS256',
+    algorithm: 'HS384',
   });
 
   const qrCode = await QRCode.toDataURL(qrString, {
