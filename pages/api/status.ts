@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import dbConnect from '../../utils/dbConnect';
 import Order from '../../models/Order';
 import { getCompletedQuery, getPendingQuery } from '../../utils/db';
+import { earlyBirdQuota, onlineQuota } from '../../constants';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'GET') {
@@ -20,12 +21,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     res.status(200).json({
       orderCount,
       // 60 pax early bird
-      firstReleaseAvailable: orderCount < 60,
+      firstReleaseAvailable: orderCount < earlyBirdQuota,
       // 150 pax maximum
-      secondReleaseAvailable: orderCount < 150,
-      // 200 pax or the whole place is packed as hell
-      available: orderCount < 200,
-      finalised: completedCount < 200,
+      secondReleaseAvailable: orderCount < onlineQuota,
+      // 150 pax, leave the rest for walk in
+      available: orderCount < onlineQuota,
+      finalised: completedCount < onlineQuota,
       pendingCount,
     });
   });

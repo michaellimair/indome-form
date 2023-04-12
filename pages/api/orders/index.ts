@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import Order from '../../../models/Order';
 import dbConnect from '../../../utils/dbConnect';
 import { addMinutes } from 'date-fns';
+import { earlyBirdQuota, onlineQuota } from '../../../constants';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') {
@@ -24,15 +25,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       ]
     });
     let price: number;
-    if (orderCount < 20) {
+    if (orderCount < earlyBirdQuota) {
       price = 20000;
-    } else if (orderCount < 55) {
+    } else if (orderCount < onlineQuota) {
       price = 22500;
-    } else if (orderCount < 115) {
-      price = 25000;
     } else {
       res.status(400).json({
-        message: 'No more available quota! Please proceed to walk-in starting from 6pm',
+        message: 'No more available online quota! Please proceed to walk-in.',
       });
       return;
     }
