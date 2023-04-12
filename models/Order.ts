@@ -23,10 +23,6 @@ const OrderSchema = new mongoose.Schema<IOrder>({
     type: Boolean,
     default: false,
   },
-  acknowledgeVaccineRequirement: {
-    type: Boolean,
-    default: false,
-  },
   paymentMethod: String,
   paymentProofFileName: String,
   price: Number,

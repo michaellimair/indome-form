@@ -23,7 +23,6 @@ export interface IOrder {
   confirmed: boolean;
   expiresAt: Date;
   acknowledgeAgeRequirement: boolean;
-  acknowledgeVaccineRequirement: boolean;
   paymentMethod: string;
   paymentProofFileName: string;
   price: number;
@@ -43,5 +42,4 @@ export interface IEventForm {
   email: string;
   phone: string;
   acknowledgeAgeRequirement: boolean;
-  acknowledgeVaccineRequirement: boolean;  
 }

@@ -1,11 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
-import { Button, Spinner } from 'flowbite-react';
+import { Spinner } from 'flowbite-react';
 import type { NextPage } from 'next'
 import { CreateOrderSection } from '../components/CreateOrderSection';
 import { EventDescription } from '../components/EventDescription';
 import { PageContainer } from '../components/PageContainer';
-import { WaitlistForm } from '../components/WaitlistForm';
 import { HomeRefreshButton } from '../components/HomeRefreshButton';
 
 const Home: NextPage = () => {
@@ -33,7 +32,7 @@ const Home: NextPage = () => {
         </div>
       )}
       {!status.isFetching && !status?.data?.available && !status?.data?.pendingAvailable && (
-        <p className="text-center font-bold mt-3">We are sorry, there are no more online tickets for InDome 2022.</p>
+        <p className="text-center font-bold mt-3">We are sorry, there are no more online tickets for InDome 2023 - Euphoria.</p>
       )}
     </PageContainer>
   )

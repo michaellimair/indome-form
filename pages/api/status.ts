@@ -19,10 +19,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const orderCount = pendingCount + completedCount;
     res.status(200).json({
       orderCount,
-      firstReleaseAvailable: orderCount < 20,
-      secondReleaseAvailable: orderCount < 55,
-      available: orderCount < 115,
-      finalised: completedCount < 115,
+      // 60 pax early bird
+      firstReleaseAvailable: orderCount < 60,
+      // 150 pax maximum
+      secondReleaseAvailable: orderCount < 150,
+      // 200 pax or the whole place is packed as hell
+      available: orderCount < 200,
+      finalised: completedCount < 200,
       pendingCount,
     });
   });

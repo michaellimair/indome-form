@@ -1,4 +1,11 @@
-export const eventName = 'InDome Roof Rave - 2022';
+export const eventName = 'InDome 2023 - Euphoria';
+
+export const venueLink = "https://goo.gl/maps/KYYBRbzgbYJZi3Nj6";
+export const venueAddress = "3/F, Won Hing Building, 74-78 Stanley St, Central";
+export const venueName = "Social Room";
+export const eventDate = "Friday, 28 April 2023";
+export const eventTime = "10:00 pm - 4:00 am";
+export const bannerUrl = "https://indomeformprod-rkh4lqqhyq-as.a.run.app/euphoria-banner.png";
 
 export enum AccountInfoType {
   MOBILE_NUMBER,
@@ -53,9 +60,9 @@ export const paymentMethods: PaymentMethod[] = [
   },
 ];
 
-export const confirmationMessage = `I hereby confirm that I am 18 or above and have been fully vaccinated according to the [guidelines of the HKSAR Government](https://www.coronavirus.gov.hk/pdf/vp_t1_ENG.pdf).
+export const confirmationMessage = `I hereby confirm that I am 18 or above.
 
-I will be able to present my identity and proof of vaccination upon entry.
+I will be able to present my proof of identity upon entry upon request.
 
 I understand that failure to do so will result in being denied entry and no refund will be provided.`;
 

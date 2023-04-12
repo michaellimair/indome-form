@@ -52,7 +52,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return;
     }  
 
-    const body = pick(req.body, ['name', 'email', 'phone', 'acknowledgeAgeRequirement', 'acknowledgeVaccineRequirement'])
+    const body = pick(req.body, ['name', 'email', 'phone', 'acknowledgeAgeRequirement'])
 
     await Order.updateOne({
       _id: orderId

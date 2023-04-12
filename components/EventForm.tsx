@@ -17,7 +17,6 @@ export const EventForm: FC = () => {
       email: '',
       phone: '',
       acknowledgeAgeRequirement: false,
-      acknowledgeVaccineRequirement: false,
     },
   });
   const router = useRouter();
@@ -113,22 +112,6 @@ export const EventForm: FC = () => {
                 <label htmlFor={field.name} className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-400">
                 I hereby confirm that I am 18 or above.
               </label>
-              </>
-            )}
-          />
-        </div>
-      </div>
-      <div className="flex items-start mb-6">
-        <div className="flex items-center">
-          <Controller
-            control={control}
-            name="acknowledgeVaccineRequirement"
-            render={({ field }) => (
-              <>
-                <input id={field.name} name={field.name} type="checkbox" checked={field.value} className="w-4 h-4 bg-gray-50 rounded border border-gray-300 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800" required onChange={field.onChange} />
-                <label htmlFor={field.name} className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-400">
-                  I have undergone the full vaccination requirement according to the <ExternalLink rel="noopener noreferrer" target="_blank" href="https://www.coronavirus.gov.hk/pdf/vp_t1_ENG.pdf">guidelines of the HKSAR Government</ExternalLink> and will be able to present a vaccination pass along with a RAT test on the day of the event.
-                </label>
               </>
             )}
           />

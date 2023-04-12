@@ -26,7 +26,7 @@ export const WaitlistForm: FC = () => {
 
   return (
     <>
-      <p className="text-center font-bold mt-3">We are sorry, there are no more online tickets for InDome 2022.</p>
+      <p className="text-center font-bold mt-3">We are sorry, there are no more online tickets for InDome 2023 - Euphoria.</p>
       <p className="text-center mt-2">However, drop your contact below and we will notify you if we release more tickets in the future!</p>
       {!createWaitlistMutation.isSuccess ? (
         <form className="w-full mt-4" onSubmit={handleSubmit(onSubmit)}>

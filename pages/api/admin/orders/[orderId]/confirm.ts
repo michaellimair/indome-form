@@ -4,6 +4,7 @@ import Order from '../../../../../models/Order';
 import GoogleClient from '../../../../../utils/google';
 import { IOrder } from '../../../../../global';
 import { withAuthentication } from '../../../../../utils/auth';
+import { eventName, venueLink, venueAddress, venueName, eventDate, eventTime, bannerUrl } from "../../../../../constants"
 
 const getMailBody = (order: IOrder) => `
 <!DOCTYPE html>
@@ -105,7 +106,7 @@ const getMailBody = (order: IOrder) => `
 <table border="0" cellpadding="0" cellspacing="0" class="image_block block-1" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;" width="100%">
 <tr>
 <td class="pad" style="width:100%;padding-right:0px;padding-left:0px;">
-<div align="center" class="alignment" style="line-height:10px"><img class="big" src="https://indomeformprod-rkh4lqqhyq-as.a.run.app/roofrave-banner.png" style="display: block; height: auto; border: 0; width: 500px; max-width: 100%;" width="500"/></div>
+<div align="center" class="alignment" style="line-height:10px"><img class="big" src="${bannerUrl}" style="display: block; height: auto; border: 0; width: 500px; max-width: 100%; margin-bottom:16px;" width="500"/></div>
 </td>
 </tr>
 </table>
@@ -119,7 +120,7 @@ const getMailBody = (order: IOrder) => `
 <table border="0" cellpadding="0" cellspacing="0" class="heading_block block-3" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;" width="100%">
 <tr>
 <td class="pad" style="width:100%;text-align:center;">
-<h2 style="margin: 0; color: #555555; font-size: 18px; font-family: Arial, Helvetica Neue, Helvetica, sans-serif; line-height: 120%; text-align: center; direction: ltr; font-weight: 700; letter-spacing: normal; margin-top: 0; margin-bottom: 0;"><span class="tinyMce-placeholder">InDome Roof Rave 2022</span></h2>
+<h2 style="margin: 0; color: #555555; font-size: 18px; font-family: Arial, Helvetica Neue, Helvetica, sans-serif; line-height: 120%; text-align: center; direction: ltr; font-weight: 700; letter-spacing: normal; margin-top: 0; margin-bottom: 0;"><span class="tinyMce-placeholder">${eventName}</span></h2>
 </td>
 </tr>
 </table>
@@ -127,9 +128,9 @@ const getMailBody = (order: IOrder) => `
 <tr>
 <td class="pad">
 <div style="color:#000000;font-size:14px;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-weight:700;line-height:120%;text-align:center;direction:ltr;letter-spacing:0px;mso-line-height-alt:16.8px;">
-<p style="margin: 0; margin-bottom: 16px;">Saturday, 17 September 2022</p>
-<p style="margin: 0; margin-bottom: 16px;">4pm - 10pm</p>
-<p style="margin: 0;"><a href="https://goo.gl/maps/GWkoo3fxLca3Sm7o8" rel="noopener noreferrer" style="color: #0068a5;" target="_blank">13F, Tai Cheong (Liberal) Factory Building, 3 Wing Ming Street, Cheung Sha Wan, Hong Kong</a></p>
+<p style="margin: 0; margin-bottom: 16px;">${eventDate}</p>
+<p style="margin: 0; margin-bottom: 16px;">${eventTime}</p>
+<p style="margin: 0;"><a href="${venueLink}" rel="noopener noreferrer" style="color: #0068a5;" target="_blank">${venueName} (${venueAddress})</a></p>
 </div>
 </td>
 </tr>
@@ -173,7 +174,7 @@ const getMailBody = (order: IOrder) => `
 <tr>
 <td class="pad">
 <div style="color:#000000;font-size:14px;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-weight:400;line-height:120%;text-align:left;direction:ltr;letter-spacing:0px;mso-line-height-alt:16.8px;">
-<p style="margin: 0; margin-bottom: 16px;">We cannot wait to see you in InDome Roof Rave 2022!</p>
+<p style="margin: 0; margin-bottom: 16px;">We cannot wait to see you in InDome 2023 - Euphoria!</p>
 <p style="margin: 0; margin-bottom: 16px;"> </p>
 <p style="margin: 0;">Cheers,<br/>InDome</p>
 </div>
@@ -207,7 +208,6 @@ const getMailBody = (order: IOrder) => `
 <td class="pad">
 <ul style="margin: 0; padding: 0; margin-left: 20px; list-style-type: revert; color: #000000; font-size: 14px; font-family: Arial, Helvetica Neue, Helvetica, sans-serif; font-weight: 400; line-height: 120%; text-align: left; direction: ltr; letter-spacing: 0px;">
 <li style="margin-bottom: 0px;">You must be 18 or above on the day of the event.</li>
-<li style="margin-bottom: 0px;">On the day of the event, you must present a RAT test and a vaccine pass with "Blue Code" status in the LeaveHomeSafe app. As such, attendees have to be fully vaccinated according to the <a href="https://www.coronavirus.gov.hk/pdf/vp_t1_ENG.pdf" rel="noopener" style="text-decoration: underline; color: #0068a5;" target="_blank">prevailing requirements of the HKSAR government</a>.</li>
 <li>Failure to fulfill the above requirements will result in being denied entry and no refund will be given.</li>
 </ul>
 </td>
@@ -286,7 +286,7 @@ const handler = withAuthentication(async (req: NextApiRequest, res: NextApiRespo
   const googleClient = new GoogleClient();
   await googleClient.sendMail({
     to: order.email,
-    subject: 'Payment Confirmation - InDome Roof Rave 2022',
+    subject: 'Payment Confirmation - InDome 2023 - Euphoria',
     body: getMailBody(order),
   });
 
