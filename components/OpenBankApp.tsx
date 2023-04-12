@@ -20,7 +20,7 @@ export const OpenBankApp: FC = () => {
       <Button color="success" style={{ backgroundColor: '#34a344' }} onClick={openHangSengBankApp}>
         Open in Hang Seng Bank
       </Button>
-      <Button color="success" style={{ backgroundColor: 'black' }} onClick={openMoxBankApp}>
+      <Button color="success" style={{ backgroundColor: 'black', border: "1px solid white" }} onClick={openMoxBankApp}>
         Open in Mox Bank
       </Button>
       <Button color="success" style={{ backgroundColor: '#02ce9e' }} onClick={openZABankApp}>
