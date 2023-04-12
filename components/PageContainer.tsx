@@ -2,7 +2,7 @@ import { FC } from "react";
 import Head from 'next/head'
 
 export const PageContainer: FC<any> = ({ children }) => (
-  <div className="flex min-h-screen flex-col items-center w-full dark:bg-black dark:text-white">
+  <div className="flex min-h-screen flex-col items-center w-full">
     <Head>
       <title>Registration | InDome 2023 - Euphoria</title>
       <link rel="icon" href="/favicon.ico" />

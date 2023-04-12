@@ -8,7 +8,7 @@ export const TokenInput: FC<{ onChange: (token: string) => void }> = ({
   const [token, setToken] = useState<string>();
 
   return (
-    <form className="p-3 block sticky top-0 bg-white z-50" onSubmit={(e) => {
+    <form className="p-3 block sticky top-0 bg-white dark:bg-black z-50" onSubmit={(e) => {
       e.preventDefault();
       if (token) {
         onChange(token)
