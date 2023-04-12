@@ -1,5 +1,5 @@
 import { Button, Tooltip } from "flowbite-react";
-import { FC, useCallback, useMemo, useState } from "react";
+import { FC, Fragment, useCallback, useMemo, useState } from "react";
 import { AccountInfo, AccountInfoType, PaymentMethod } from "../constants";
 import { ExternalLink } from "./ExternalLink";
 import { OpenBankApp } from "./OpenBankApp";
@@ -81,7 +81,7 @@ export const SelectedMethodInfo: FC<SelectedMethodInfoProps> = ({
       <p>Amount: HKD {(price / 100).toFixed(2)}</p>
       {method.bank && <p>Bank: {method.bank}</p>}
       {method.accountInfo.map(({ type, value, image }) => (
-        <>
+        <Fragment key={type}>
           <p>{getLabelByAccountInfoType(type)}: <AccountInfoValue type={type} value={value} /></p>
           {image && (
             <img
@@ -94,7 +94,7 @@ export const SelectedMethodInfo: FC<SelectedMethodInfoProps> = ({
               <CopyButton value={value.replace(/-/gi, '')} label="Copy Account Number" />
             </div>
           )}
-        </>
+        </Fragment>
       ))}
       {method.name === 'fps' && (
         <FPSQRCodeDisplay price={price} method={method} />
