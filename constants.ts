@@ -3,7 +3,7 @@ export const eventName = 'InDome 2023 - Euphoria';
 export const venueLink = "https://goo.gl/maps/KYYBRbzgbYJZi3Nj6";
 export const venueAddress = "3/F, Won Hing Building, 74-78 Stanley St, Central";
 export const venueName = "Social Room";
-export const eventDate = "Friday, 28 April 2023";
+export const eventDate = "Saturday, 29 April 2023";
 export const eventTime = "10:00 pm - 4:00 am";
 export const bannerUrl = "https://indomeformprod-rkh4lqqhyq-as.a.run.app/euphoria-banner.png";
 

@@ -13,10 +13,10 @@ export const EventDescription: FC<{
 }) => {
   return (
     <div className="mt-4 w-full">
-      <p className="mb-2 font-bold text-3xl">INDOME is back!</p>
+      <p className="mb-2 font-bold text-3xl">InDome is back!</p>
       <p className="mb-2">Get ready to spring into the euphoric night of your life!</p>
 
-      <p className="mb-4 font-bold text-2xl">Indome and Social Room presents Euphoria</p>
+      <p className="mb-4 font-bold text-2xl">InDome and Social Room presents Euphoria</p>
       <p>Bring your move</p>
       <p>Step into the groove</p>
       <p className="mb-2">This is the night of delight</p>
@@ -26,8 +26,8 @@ export const EventDescription: FC<{
 
       <p className="mt-4">Ticket Price (includes 1 drink):</p>
       <ul className="list-disc ml-5 mb-4">
-        <li><span className={!firstReleaseAvailable ? 'line-through' : ''}>Early Bird (limited tickets): 200 HKD</span> {!firstReleaseAvailable && <b>SOLD OUT</b>}</li>
-        <li><span className={!secondReleaseAvailable ? 'line-through' : ''}>Main Round (limited tickets): 225 HKD</span> {!secondReleaseAvailable && <b>SOLD OUT</b>}</li>
+        <li><span className={!firstReleaseAvailable ? 'line-through' : ''}>First Release: 200 HKD</span> {!firstReleaseAvailable && <b>SOLD OUT</b>}</li>
+        <li><span className={!secondReleaseAvailable ? 'line-through' : ''}>Second Release: 225 HKD</span> {!secondReleaseAvailable && <b>SOLD OUT</b>}</li>
         <li><span className={!available ? 'line-through' : ''}>Walk-in: 250 HKD</span> {!available && <b>SOLD OUT</b>}</li>
       </ul>
 

@@ -4,7 +4,7 @@ export const ExternalLink: FC<DetailedHTMLProps<AnchorHTMLAttributes<HTMLAnchorE
   children,
   ...props
 }) => (
-  <a {...props} className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600">
+  <a {...props} className="underline text-blue-600 dark:text-white hover:text-blue-800 visited:text-purple-600">
     {children}
   </a>
 )

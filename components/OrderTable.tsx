@@ -134,9 +134,12 @@ export const OrderTable: FC<{ orders: IOrder[]; token: string; onConfirm: () => 
           <Table.HeadCell>
             Payment Method
           </Table.HeadCell>
-          {/* <Table.HeadCell>
-            Confirmed
-          </Table.HeadCell> */}
+          <Table.HeadCell>
+            {/* @ts-ignore */}
+            <span className="sr-only">
+              Delete Ticket
+            </span>
+          </Table.HeadCell>
           <Table.HeadCell>
             {/* @ts-ignore */}
             <span className="sr-only">
@@ -152,28 +155,26 @@ export const OrderTable: FC<{ orders: IOrder[]; token: string; onConfirm: () => 
         </Table.Head>
         <Table.Body className="divide-y">
           {orders?.map((order, index) => (
-            <Table.Row key={order._id} className={`dark:border-gray-700 ${order.confirmed ? 'bg-green-200' : 'bg-amber-100'}`}>
-              <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+            <Table.Row key={order._id} className={`dark:border-gray-700 ${order.confirmed ? 'bg-green-200 dark:bg-green-900' : 'bg-amber-100 dark:bg-amber-700'}`}>
+              <Table.Cell className="whitespace-nowrap font-medium dark:text-white">
                 {index + 1}
               </Table.Cell>
-              <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+              <Table.Cell className="whitespace-nowrap font-medium dark:text-white">
                 {order.name}
               </Table.Cell>
-              <Table.Cell>
+              <Table.Cell className="dark:text-white">
                 {order.phone} {!!order.phone && (<ExternalLink target="_blank" rel="noopener noreferrer" href={`https://wa.me/${order.phone.replace('+', '')}`}>WhatsApp</ExternalLink>)}
               </Table.Cell>
-              <Table.Cell>
+              <Table.Cell className="dark:text-white">
                 {!!order.email && <ExternalLink target="_blank" rel="noopener noreferrer" href={`mailto:${order.email}`}>{order.email}</ExternalLink>}
               </Table.Cell>
-              <Table.Cell>
+              <Table.Cell className="dark:text-white">
                 HKD {(order.price / 100).toFixed(0)}
               </Table.Cell>
-              <Table.Cell>
-                {paymentMethods.find((method) => method.name === order.paymentMethod)?.label} {!!order.paymentProofFileName && (<ExternalLink target="_blank" rel="noopener noreferrer" href={`/api/admin/orders/${order._id}/image?token=${order.imageToken}`}>Link</ExternalLink>)}
+              <Table.Cell className="dark:text-white">
+                {paymentMethods.find((method) => method.name === order.paymentMethod)?.label}<br />
+                {!!order.paymentProofFileName && (<ExternalLink target="_blank" rel="noopener noreferrer" href={`/api/admin/orders/${order._id}/image?token=${order.imageToken}`}>Link</ExternalLink>)}
               </Table.Cell>
-              {/* <Table.Cell>
-                {order.confirmed ? 'Yes' : 'No'}
-              </Table.Cell> */}
               <Table.Cell>
                 <Button
                   disabled={(deleteTicketMutation.isLoading && mutatingList.has(order._id)) || !order.filled}
