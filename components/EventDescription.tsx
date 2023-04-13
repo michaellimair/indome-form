@@ -13,13 +13,13 @@ export const EventDescription: FC<{
 }) => {
   return (
     <div className="mt-4 w-full">
-      <p className="mb-2 font-bold text-3xl">InDome is back!</p>
       <p className="mb-2">Get ready to spring into the euphoric night of your life!</p>
 
       <p className="mb-4 font-bold text-2xl">InDome and Social Room presents Euphoria</p>
       <p>Bring your move</p>
       <p>Step into the groove</p>
-      <p className="mb-2">This is the night of delight</p>
+      <p>Let the beat move your feet</p>
+      <p className="mb-2">And euphoria take the lead</p>
       <p><span className="w-4 font-bold inline">Date:</span> {eventDate}</p>
       <p><span className="w-4 font-bold inline">Time:</span> {eventTime}</p>
       <p><span className="w-4 font-bold inline">Venue:</span> <ExternalLink rel="noopener noreferrer" target="_blank" href={venueLink}><b>{venueName}</b> ({venueAddress})</ExternalLink></p>
