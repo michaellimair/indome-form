@@ -6,9 +6,10 @@ import { CreateOrderSection } from '../components/CreateOrderSection';
 import { EventDescription } from '../components/EventDescription';
 import { PageContainer } from '../components/PageContainer';
 import { HomeRefreshButton } from '../components/HomeRefreshButton';
+import { EventStatus } from '../customTypes';
 
 const Home: NextPage = () => {
-  const status = useQuery(['status'], () => axios.get<{ orderCount: number; available: boolean; pendingAvailable: boolean; firstReleaseAvailable: boolean; secondReleaseAvailable: boolean }>('/api/status').then((r) => r.data), {
+  const status = useQuery(['status'], () => axios.get<EventStatus>('/api/status').then((r) => r.data), {
     cacheTime: 0,
   });
 
@@ -22,7 +23,7 @@ const Home: NextPage = () => {
       {!status.isFetching && status?.data && (
         <>
           <EventDescription firstReleaseAvailable={status?.data?.firstReleaseAvailable} secondReleaseAvailable={status?.data?.secondReleaseAvailable} available={status?.data?.available} />
-          <CreateOrderSection available={status.data.available} />
+          <CreateOrderSection status={status.data} />
         </>
       )}
       {!status.isFetching && !status?.data?.available && status?.data?.pendingAvailable && (
