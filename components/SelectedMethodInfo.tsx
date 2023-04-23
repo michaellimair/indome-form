@@ -50,10 +50,10 @@ const FPSQRCodeDisplay: FC<SelectedMethodInfoProps> = ({
   method,
 }) => {
   const imageSrc = useMemo(() => {
-    if (price === 20000) {
+    if (price === 200_00) {
       return '/qrcode_200hkd.png';
     }
-    if (price === 22500) {
+    if (price === 225_00) {
       return '/qrcode_225hkd.png';
     }
     return '/qrcode_250hkd.png';
