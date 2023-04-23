@@ -2,7 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import Order from '../../../models/Order';
 import dbConnect from '../../../utils/dbConnect';
 import { addMinutes } from 'date-fns';
-import { earlyBirdQuota, onlineQuota } from '../../../constants';
+import { earlyBirdQuota, firstReleaseCloseTime, onlineQuota } from '../../../constants';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') {
@@ -24,8 +24,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         } }
       ]
     });
+    const currentTime = new Date();
     let price: number;
-    if (orderCount < earlyBirdQuota) {
+    if (orderCount < earlyBirdQuota && currentTime < firstReleaseCloseTime) {
       price = 20000;
     } else if (orderCount < onlineQuota) {
       price = 22500;
