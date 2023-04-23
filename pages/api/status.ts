@@ -2,7 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import dbConnect from '../../utils/dbConnect';
 import Order from '../../models/Order';
 import { getCompletedQuery, getPendingQuery } from '../../utils/db';
-import { earlyBirdQuota, firstReleaseCloseTime, onlineQuota, secondReleaseOpenTime } from '../../constants';
+import { earlyBirdQuota, firstReleaseCloseTime, onlineQuota, secondReleaseCloseTime, secondReleaseOpenTime } from '../../constants';
 import { EventStatus } from '../../customTypes';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -20,7 +20,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const pendingCount = await Order.countDocuments(getPendingQuery());
     const orderCount = pendingCount + completedCount;
 
-    const firstReleaseOpen = new Date() < new Date(firstReleaseCloseTime);
+    const currentDate = new Date();
+
+    const firstReleaseOpen = currentDate < firstReleaseCloseTime;
 
     const result: EventStatus = {
       orderCount,
@@ -29,11 +31,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       firstReleaseOpen,
       // 150 pax maximum
       secondReleaseAvailable: orderCount < onlineQuota,
-      secondReleaseOpen: new Date() > new Date(secondReleaseOpenTime),
+      secondReleaseOpen: currentDate > secondReleaseOpenTime && currentDate < secondReleaseCloseTime,
       // 150 pax, leave the rest for walk in
-      available: orderCount < onlineQuota,
-      pendingAvailable: false,
-      finalised: completedCount < onlineQuota,
+      available: orderCount < onlineQuota && currentDate < secondReleaseCloseTime,
+      pendingAvailable: completedCount < onlineQuota,
+      finalised: completedCount < onlineQuota && currentDate < secondReleaseCloseTime,
       pendingCount,
     };
     res.status(200).json(result);

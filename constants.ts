@@ -7,8 +7,9 @@ export const eventDate = "Saturday, 29 April 2023";
 export const eventTime = "10:00 pm - 4:00 am";
 export const bannerUrl = "https://indomeformprod-rkh4lqqhyq-as.a.run.app/euphoria-banner.png";
 
-export const firstReleaseCloseTime = "2023-04-21T22:00:00+08:00";
-export const secondReleaseOpenTime = "2023-04-23T18:00:00+08:00";
+export const firstReleaseCloseTime = new Date("2023-04-21T22:00:00+08:00");
+export const secondReleaseOpenTime = new Date("2023-04-23T18:00:00+08:00");
+export const secondReleaseCloseTime = new Date("2023-04-29T00:00:00+08:00");
 
 export const earlyBirdQuota = 40;
 export const onlineQuota = 100;
