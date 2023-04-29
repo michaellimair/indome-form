@@ -31,7 +31,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       firstReleaseOpen,
       // 150 pax maximum
       secondReleaseAvailable: orderCount < onlineQuota,
-      secondReleaseOpen: currentDate > secondReleaseOpenTime && currentDate < secondReleaseCloseTime,
+      secondReleaseOpen: false,
       // 150 pax, leave the rest for walk in
       available: false,
       pendingAvailable: false,
