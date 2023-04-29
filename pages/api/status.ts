@@ -33,9 +33,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       secondReleaseAvailable: orderCount < onlineQuota,
       secondReleaseOpen: currentDate > secondReleaseOpenTime && currentDate < secondReleaseCloseTime,
       // 150 pax, leave the rest for walk in
-      available: orderCount < onlineQuota && currentDate < secondReleaseCloseTime,
-      pendingAvailable: completedCount < onlineQuota,
-      finalised: completedCount < onlineQuota && currentDate < secondReleaseCloseTime,
+      available: false,
+      pendingAvailable: false,
+      finalised: true,
       pendingCount,
     };
     res.status(200).json(result);

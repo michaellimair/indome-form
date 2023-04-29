@@ -28,7 +28,7 @@ export const EventDescription: FC<{
       <ul className="list-disc ml-5 mb-4">
         <li><span className={!firstReleaseAvailable ? 'line-through' : ''}>First Release: 200 HKD</span> {!firstReleaseAvailable && <b>SOLD OUT</b>}</li>
         <li><span className={!secondReleaseAvailable ? 'line-through' : ''}>Second Release: 225 HKD</span> {!secondReleaseAvailable && <b>SOLD OUT</b>}</li>
-        <li><span className={!available ? 'line-through' : ''}>Walk-in: 250 HKD</span> {!available && <b>SOLD OUT</b>}</li>
+        <li><span>Walk-in: 250 HKD</span></li>
       </ul>
 
       <p className="font-bold">* Places are limited, so grab your spot fast! Your price will be allocated automatically on a first-come-first-serve basis.</p>
