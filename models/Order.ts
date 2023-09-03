@@ -1,5 +1,4 @@
 import mongoose, { Model } from 'mongoose';
-import jsonwebtoken from 'jsonwebtoken';
 import { IOrder } from '../global';
 
 const OrderSchema = new mongoose.Schema<IOrder>({

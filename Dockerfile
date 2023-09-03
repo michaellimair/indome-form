@@ -57,4 +57,4 @@ EXPOSE 8080
 
 ENV PORT 8080
 
-CMD yarn start -p 8080
+CMD node server.js -p 8080

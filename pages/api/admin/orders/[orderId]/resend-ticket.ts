@@ -1,33 +1,12 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import Order from '../../../../../models/Order';
 import dbConnect from '../../../../../utils/dbConnect';
-import jsonwebtoken from 'jsonwebtoken';
-import QRCode from 'qrcode';
 import { withAuthentication } from '../../../../../utils/auth';
 import { IOrder } from '../../../../../global';
 import GoogleClient from '../../../../../utils/google';
 import { eventName, venueLink, venueAddress, venueName, eventDate, eventTime, bannerUrl } from "../../../../../constants"
 
 const getMailBody = async (order: IOrder) => {
-  const qrString = jsonwebtoken.sign({
-    sub: order._id,
-    name: order.name
-  }, process.env.JWT_SECRET!, {
-    expiresIn: '30d',
-    issuer: 'indome',
-    algorithm: 'HS384',
-  });
-
-  const qrCode = await QRCode.toDataURL(qrString, {
-    errorCorrectionLevel: 'H',
-    type: 'image/jpeg',
-    margin: 1,
-    color: {
-     dark: '#000000',
-     light: '#FFF',
-    },
-  });
-
   return {
     html: `
     <!DOCTYPE html>
@@ -177,8 +156,6 @@ const getMailBody = async (order: IOrder) => {
     <div style="color:#000000;font-size:14px;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-weight:400;line-height:120%;text-align:left;direction:ltr;letter-spacing:0px;mso-line-height-alt:16.8px;">
     <p style="margin: 0; margin-bottom: 16px;">Hi ${order.name},</p>
     <p style="margin: 0;">It’s T-1 day to ${eventName}!</p>
-    <p style="margin: 0;">Below is the QR code for your reservation to the event, please present it upon entry:</p>
-    <p style="margin: 0; text-align: center; margin-top: 16px; margin-bottom: 16px;"><img src="cid:qrImage" alt="QR Code for User ${order._id}" style="height: 400px; width: 400px"></p>
     </div>
     </td>
     </tr>
@@ -229,7 +206,6 @@ const getMailBody = async (order: IOrder) => {
     <ul style="margin: 0; padding: 0; margin-left: 20px; list-style-type: revert; color: #000000; font-size: 14px; font-family: Arial, Helvetica Neue, Helvetica, sans-serif; font-weight: 400; line-height: 120%; text-align: left; direction: ltr; letter-spacing: 0px;">
     <li style="margin-bottom: 0px;">You must be 18 or above on the day of the event.</li>
     <li>Failure to fulfill the above requirements will result in being denied entry and no refund will be given.</li>
-    <li><b>The QR code above is valid for one person.</b> If you wish to transfer your ticket, you may <b>forward this email</b> to the intended recipient.</li>
     </ul>
     </td>
     </tr>
@@ -277,8 +253,7 @@ const getMailBody = async (order: IOrder) => {
     </table><!-- End -->
     </body>
     </html>
-    `,
-    image: qrCode,
+    `
   };
 };
 
@@ -293,17 +268,12 @@ const handler = withAuthentication(async (req: NextApiRequest, res: NextApiRespo
     return;
   }
 
-  const { html, image } = await getMailBody(order.toJSON());
+  const { html } = await getMailBody(order.toJSON());
   const googleClient = new GoogleClient();
   await googleClient.sendMail({
     to: order.email,
     subject: 'InDome 2023 - Euphoria - Ticket Confirmation',
     body: html,
-    attachments: [{
-      cid: 'qrImage',
-      contentType: 'image/jpeg',
-      path: image,
-    }]
   });
   res.status(200).json({ message: "OK" });
 })
