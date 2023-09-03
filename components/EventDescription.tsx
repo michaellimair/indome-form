@@ -24,9 +24,9 @@ export const EventDescription: FC<{
 
       <p className="mt-4">Ticket Price (includes 1 drink):</p>
       <ul className="list-disc ml-5 mb-4">
-        {status.tierInfo.map(({ tier, isSalesStarted, available, title, price }) => {
+        {status.tierInfo.map(({ tier, isSalesStarted, pendingAvailable, title, price }) => {
           // If ticket sales is not started yet, show as available
-          const soldOut = isSalesStarted && !available;
+          const soldOut = isSalesStarted && !pendingAvailable;
           return (
             <li key={tier}>
               <span className={clsx({ ['line-through']: soldOut })}>{title}: {price / 100} HKD</span> {soldOut && <b>SOLD OUT</b>}

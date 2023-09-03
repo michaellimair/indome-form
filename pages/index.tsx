@@ -36,11 +36,11 @@ const ProceedToPurchase: FC<{ status: EventStatus }> = ({
 
   return (
     <>
-      <Button onClick={() => createOrderMutation.mutate()} disabled={createOrderMutation.isLoading}>
+      <Button className="mt-6" onClick={() => createOrderMutation.mutate()} disabled={createOrderMutation.isLoading}>
         Proceed to Purchase
       </Button>
       {createOrderMutation.isError && (
-        <p className="text-red-600 mt-2">Unable to proceed to purchase, please try again</p>
+        <p className="text-red-600 mt-2">Unable to proceed to purchase, please refresh this page!</p>
       )}
     </>
   )
@@ -58,7 +58,7 @@ const OrderMessage: FC<{ status: EventStatus }> = ({
       return 'Ticket sales is not yet available, check back later!';
     }
 
-    if (earlyBirdTier.isInWindow && !earlyBirdTier.available) {
+    if (earlyBirdTier.isInWindow && !earlyBirdTier.available && !earlyBirdTier.pendingAvailable) {
       return `Sorry, early bird tickets are now sold out. Sales for main release tickets will begin ${formatDate(firstReleaseTier.openTime)}.`;
     }
 
@@ -67,7 +67,11 @@ const OrderMessage: FC<{ status: EventStatus }> = ({
       return `Sorry, sales for early bird tickets are now closed. Sales for main release tickets will begin ${formatDate(firstReleaseTier.openTime)}.`;
     }
 
-    return `We are sorry, there are no more online tickets for ${eventName}, please proceed to walk-in.\nSee you there!`;
+    if (!status.available && !status.pendingAvailable) {
+      return `We are sorry, there are no more online tickets for ${eventName}, please proceed to walk-in.\nSee you there!`;
+    }
+
+    return null;
   }, [status]);
 
   return text ? (
