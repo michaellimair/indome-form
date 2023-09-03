@@ -2,7 +2,6 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import dbConnect from '../../utils/dbConnect';
 import Waitlist from '../../models/Waitlist';
 import { pick } from 'lodash';
-import { verifyCaptcha } from '../../utils/captcha';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') {
