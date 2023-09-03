@@ -287,7 +287,7 @@ const handler = withAuthentication(async (req: NextApiRequest, res: NextApiRespo
   await googleClient.sendMail({
     to: order.email,
     subject: 'Payment Confirmation - InDome 2023 - Euphoria',
-    body: getMailBody(order),
+    body: getMailBody(order.toJSON()),
   });
 
   res.status(200).json(order.toJSON());

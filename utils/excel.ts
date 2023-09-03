@@ -1,8 +1,7 @@
 import { IOrder } from '../global';
-import saveAs from 'file-saver';
-import ExcelJS from 'exceljs';
 
 export const exportOrdersToExcel = async (orders: IOrder[]) => {
+  const { default: ExcelJS } = await import("exceljs");
   const wb = new ExcelJS.Workbook();
   const sheet = wb.addWorksheet('Attendees');
   sheet.columns = [
@@ -24,6 +23,7 @@ export const exportOrdersToExcel = async (orders: IOrder[]) => {
   ];
   sheet.addRows(orders);
   const buf = await wb.xlsx.writeBuffer();
-  const blob = new Blob([buf], { type: "applicationi/xlsx" });
+  const blob = new Blob([buf], { type: "application/xlsx" });
+  const { default: saveAs } = await import("file-saver");
   saveAs(blob, `attendees-${new Date().toDateString().replace(/ /gi, '')}.xlsx`);
 };
