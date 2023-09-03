@@ -20,7 +20,7 @@ export const EventDescription: FC<{
       <p className="mb-4">An epic party that feels just right!</p>
       <p><span className="w-4 font-bold inline">Date:</span> {eventDate}</p>
       <p><span className="w-4 font-bold inline">Time:</span> {eventTime}</p>
-      <p><span className="w-4 font-bold inline">Venue:</span> <ExternalLink rel="noopener noreferrer" target="_blank" href={venueLink}><b>{venueName}</b> ({venueAddress})</ExternalLink></p>
+      <p><span className="w-4 font-bold inline">Venue:</span> <b>{venueName}</b> ({venueAddress}) [<ExternalLink rel="noopener noreferrer" target="_blank" href={venueLink}>View in Google Maps</ExternalLink>]</p>
 
       <p className="mt-4">Ticket Price (includes 1 drink):</p>
       <ul className="list-disc ml-5 mb-4">

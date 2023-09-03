@@ -56,9 +56,11 @@ export type EventTierInfo = (Pick<TicketTierInfo, "tier" | "title" | "price" | "
   isSalesEnded: boolean;
 });
 
-// TODO: Change this back to the actual early bird open time!
-export const eventSalesOpenTime = new Date("2023-08-06T18:00:00+08:00");
+export const eventSalesOpenTime = new Date("2023-09-06T18:00:00+08:00");
 export const eventSalesCloseTime = new Date("2023-09-29T23:59:59+08:00");
+
+const earlyBirdCloseTime = new Date("2023-09-11T22:59:59+08:00");
+const mainReleaseOpenTime = new Date("2023-09-13T18:00:00+08:00");
 
 export const ticketTiers: TicketTierInfo[] = [
   {
@@ -67,14 +69,14 @@ export const ticketTiers: TicketTierInfo[] = [
     price: 20000,
     quota: 1,
     openTime: eventSalesOpenTime,
-    closeTime: new Date("2023-09-04T01:00:00+08:00"),
+    closeTime: earlyBirdCloseTime,
   },
   {
     tier: TicketTier.FIRST_RELEASE,
     title: "First Release",
     price: 22500,
     quota: 1,
-    openTime: new Date("2023-09-04T01:00:00+08:00"),
+    openTime: mainReleaseOpenTime,
     closeTime: eventSalesCloseTime,
   },
   {
@@ -82,7 +84,7 @@ export const ticketTiers: TicketTierInfo[] = [
     title: "Second Release",
     price: 25000,
     quota: 1,
-    openTime: new Date("2023-09-04T01:00:00+08:00"),
+    openTime: mainReleaseOpenTime,
     closeTime: eventSalesCloseTime,
   },
 ];
@@ -103,7 +105,7 @@ export const getEventTierInfo = async () => {
     closeTime,
   }) => {
     const isSalesStarted = currentDateTime >= openTime;
-    const isSalesEnded = currentDateTime < closeTime;
+    const isSalesEnded = currentDateTime >= closeTime;
     const isInWindow = isSalesStarted && isSalesEnded;
     let available = isInWindow;
     let pendingAvailable = isInWindow;
