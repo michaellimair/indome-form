@@ -56,7 +56,7 @@ export type EventTierInfo = (Pick<TicketTierInfo, "tier" | "title" | "price" | "
   isSalesEnded: boolean;
 });
 
-export const eventSalesOpenTime = new Date("2023-09-06T18:00:00+08:00");
+export const eventSalesOpenTime = new Date("2023-08-06T18:00:00+08:00");
 export const eventSalesCloseTime = new Date("2023-09-29T23:59:59+08:00");
 
 const earlyBirdCloseTime = new Date("2023-09-11T22:59:59+08:00");
@@ -106,7 +106,7 @@ export const getEventTierInfo = async () => {
   }) => {
     const isSalesStarted = currentDateTime >= openTime;
     const isSalesEnded = currentDateTime >= closeTime;
-    const isInWindow = isSalesStarted && isSalesEnded;
+    const isInWindow = isSalesStarted && !isSalesEnded;
     let available = isInWindow;
     let pendingAvailable = isInWindow;
     if (isInWindow) {
