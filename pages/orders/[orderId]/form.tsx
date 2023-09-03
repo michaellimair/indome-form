@@ -6,6 +6,7 @@ import { Countdown } from '../../../components/Countdown';
 import { EventForm } from '../../../components/EventForm';
 import { PageContainer } from '../../../components/PageContainer';
 import { IOrder } from '../../../global';
+import { CancelOrderSection } from '../../../components/CancelOrderSection';
 
 const OrderForm: NextPage = () => {
   const router = useRouter();
@@ -21,6 +22,7 @@ const OrderForm: NextPage = () => {
         <>
           <Countdown order={order} />
           <EventForm />
+          <CancelOrderSection orderId={order._id} />
         </>
       )}
     </PageContainer>

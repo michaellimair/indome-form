@@ -279,7 +279,7 @@ const handler = withAuthentication(async (req: NextApiRequest, res: NextApiRespo
     return;
   }
 
-  await order.update({
+  await order.updateOne({
     confirmed: true,
   });
 

@@ -47,11 +47,16 @@ class GoogleClient {
   }
 
   private async setAccessToken() {
-    const accessToken = await this.authClient.getAccessToken();
-    this.authClient.setCredentials({
-      refresh_token: this.refreshToken,
-      access_token: accessToken.token,
-    });
+    try {
+      const accessToken = await this.authClient.getAccessToken();
+      this.authClient.setCredentials({
+        refresh_token: this.refreshToken,
+        access_token: accessToken.token,
+      });  
+    } catch (e) {
+      console.log("Unable to get access token!");
+      throw e;
+    }
   }
 
   private async sendGmailMessage(contents: string) {

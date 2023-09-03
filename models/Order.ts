@@ -30,6 +30,7 @@ const OrderSchema = new mongoose.Schema<IOrder>({
     type: Boolean,
     default: false,
   },
+  tier: String,
 }, {
   timestamps: true,
 });

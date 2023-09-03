@@ -1,16 +1,15 @@
-export enum AppParameters {
-  SCHEMA_VERSION = 1,
-  DUPLICATION_NUMBER = 2,
-}
+import { EventTierInfo } from "./ticket-tiers";
 
 export type EventStatus = {
-  orderCount: number;
+  /**
+   * Direct purchase of tickets (non-waitlist) available.
+   */
   available: boolean;
+
+  /**
+   * Waitlist tickets are available.
+   */
   pendingAvailable: boolean;
-  firstReleaseAvailable: boolean;
-  firstReleaseOpen: boolean;
-  secondReleaseOpen: boolean;
-  secondReleaseAvailable: boolean;
-  finalised: boolean;
-  pendingCount: number;
+
+  tierInfo: EventTierInfo[]
 }
