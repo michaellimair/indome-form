@@ -293,7 +293,7 @@ const handler = withAuthentication(async (req: NextApiRequest, res: NextApiRespo
     return;
   }
 
-  const { html, image } = await getMailBody(order);
+  const { html, image } = await getMailBody(order.toJSON());
   const googleClient = new GoogleClient();
   await googleClient.sendMail({
     to: order.email,

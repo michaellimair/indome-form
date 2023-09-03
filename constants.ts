@@ -5,7 +5,7 @@ export const venueAddress = "29 Lan Kwai Fong, 29 Wyndham Street, Central";
 export const venueName = "Hold On";
 export const eventDate = "Saturday, 30 September 2023";
 export const eventTime = "9:30 pm - 3:30 am";
-export const bannerUrl = "https://indomeformprod-rkh4lqqhyq-as.a.run.app/euphoria-banner.png";
+export const bannerUrl = "https://indome23.michaellimair.me/lunar-fiesta-banner.png";
 
 export enum AccountInfoType {
   MOBILE_NUMBER,
