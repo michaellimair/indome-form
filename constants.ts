@@ -1,18 +1,11 @@
-export const eventName = 'InDome 2023 - Euphoria';
+export const eventName = 'InDome 2023 - Lunar Fiesta';
 
-export const venueLink = "https://goo.gl/maps/KYYBRbzgbYJZi3Nj6";
-export const venueAddress = "3/F, Won Hing Building, 74-78 Stanley St, Central";
-export const venueName = "Social Room";
-export const eventDate = "Saturday, 29 April 2023";
-export const eventTime = "10:00 pm - 4:00 am";
+export const venueLink = "https://goo.gl/maps/fNgrFAmj7j4bCeWW6";
+export const venueAddress = "29 Lan Kwai Fong, 29 Wyndham Street, Central";
+export const venueName = "Hold On";
+export const eventDate = "Saturday, 30 September 2023";
+export const eventTime = "9:30 pm - 3:30 am";
 export const bannerUrl = "https://indomeformprod-rkh4lqqhyq-as.a.run.app/euphoria-banner.png";
-
-export const firstReleaseCloseTime = new Date("2023-04-21T22:00:00+08:00");
-export const secondReleaseOpenTime = new Date("2023-04-23T18:00:00+08:00");
-export const secondReleaseCloseTime = new Date("2023-04-29T00:00:00+08:00");
-
-export const earlyBirdQuota = 40;
-export const onlineQuota = 100;
 
 export enum AccountInfoType {
   MOBILE_NUMBER,

@@ -1,4 +1,5 @@
 import { Mongoose } from "mongoose";
+import { TicketTier } from "./constants";
 
 declare global {
   var mongoose: {
@@ -26,6 +27,7 @@ export interface IOrder {
   paymentMethod: string;
   paymentProofFileName: string;
   price: number;
+  tier: TicketTier;
   imageToken?: string;
   checkedIn?: boolean;
 }

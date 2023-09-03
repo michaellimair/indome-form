@@ -7,9 +7,20 @@ import { EventDescription } from '../components/EventDescription';
 import { PageContainer } from '../components/PageContainer';
 import { HomeRefreshButton } from '../components/HomeRefreshButton';
 import { EventStatus } from '../customTypes';
+import { eventName } from '../constants';
 
 const Home: NextPage = () => {
-  const status = useQuery(['status'], () => axios.get<EventStatus>('/api/status').then((r) => r.data), {
+  const status = useQuery(['status'], () => axios.get<EventStatus>('/api/status').then((r) => {
+    const { data } = r;
+
+    data.tierInfo.forEach((info) => {
+      // Manually casting as date object
+      info.openTime = new Date(info.openTime);
+      info.closeTime = new Date(info.closeTime);
+    })
+
+    return data;
+  }), {
     cacheTime: 0,
   });
 
@@ -22,7 +33,7 @@ const Home: NextPage = () => {
       )}
       {!status.isFetching && status?.data && (
         <>
-          <EventDescription firstReleaseAvailable={status?.data?.firstReleaseAvailable} secondReleaseAvailable={status?.data?.secondReleaseAvailable} available={status?.data?.available} />
+          <EventDescription status={status.data} />
           <CreateOrderSection status={status.data} />
         </>
       )}
@@ -33,7 +44,10 @@ const Home: NextPage = () => {
         </div>
       )}
       {!status.isFetching && !status?.data?.available && !status?.data?.pendingAvailable && (
-        <p className="text-center font-bold mt-3">We are sorry, there are no more online tickets for InDome 2023 - Euphoria.</p>
+        <>
+          <p className="text-center font-bold mt-6">We are sorry, there are no more online tickets for {eventName}, please proceed to walk-in.</p>
+          <p className="text-center font-bold">See you there!</p>
+        </>
       )}
     </PageContainer>
   )

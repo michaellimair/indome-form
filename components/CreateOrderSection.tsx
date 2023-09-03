@@ -4,12 +4,28 @@ import { FC, useMemo } from "react";
 import { createOrder } from "../utils/order";
 import { Button } from "./Button";
 import { EventStatus } from "../customTypes";
+import { TicketTier, eventSalesCloseTime, eventSalesOpenTime } from "../ticket-tiers";
+import { formatDate } from "../utils/date";
 
 const useCreateOrder = (status: EventStatus) => {
-  const enabled = useMemo(() => status.firstReleaseOpen || status.secondReleaseOpen, [status]);
+  const enabled = useMemo(() => status.tierInfo.find((e) => e.available), [status]);
   const disabledMessage = useMemo(() => {
-    if (status.available && !status.firstReleaseOpen) {
-      return "First release ticket sales is now closed, tickets for the second release will be available from Sunday, 23 April 2023, 6:00pm.";
+    const currentDateTime = new Date();
+    const earlyBirdTier = status.tierInfo.find(({ tier }) => tier === TicketTier.EARLY_BIRD)!;
+    const firstReleaseTier = status.tierInfo.find(({ tier }) => tier === TicketTier.FIRST_RELEASE)!;
+    const secondReleaseTier = status.tierInfo.find(({ tier }) => tier === TicketTier.SECOND_RELEASE)!;
+
+    if (currentDateTime < eventSalesOpenTime) {
+      return 'Ticket sales is not yet available, check back later!';
+    }
+
+    if (earlyBirdTier.isInWindow && !earlyBirdTier.available) {
+      return `Sorry, early bird tickets are now sold out. Sales for main release tickets will begin ${formatDate(firstReleaseTier.openTime)}.`;
+    }
+
+    // In the period between early bird and main release, show a different message
+    if (!earlyBirdTier.isInWindow && new Date() < firstReleaseTier.openTime) {
+      return `Sorry, sales for early bird tickets are now closed. Sales for main release tickets will begin ${formatDate(firstReleaseTier.openTime)}.`;
     }
 
     return null;
