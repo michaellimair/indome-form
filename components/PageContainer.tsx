@@ -11,7 +11,7 @@ export const PageContainer: FC<any> = ({ children }) => (
 
     <main className="flex w-full flex-1 flex-col items-center text-left max-w-8xl">
       <img
-        src="/lunar-fiesta-banner.png"
+        src="/lunar-fiesta-banner-v2.png"
         height={200}
         className="w-full max-w-7xl"
         alt="InDome 2023 - Lunar Fiesta"

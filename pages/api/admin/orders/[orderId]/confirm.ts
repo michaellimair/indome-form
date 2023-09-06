@@ -174,7 +174,7 @@ const getMailBody = (order: IOrder) => `
 <tr>
 <td class="pad">
 <div style="color:#000000;font-size:14px;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-weight:400;line-height:120%;text-align:left;direction:ltr;letter-spacing:0px;mso-line-height-alt:16.8px;">
-<p style="margin: 0; margin-bottom: 16px;">We cannot wait to see you in InDome 2023 - Euphoria!</p>
+<p style="margin: 0; margin-bottom: 16px;">We cannot wait to see you in ${eventName}!</p>
 <p style="margin: 0; margin-bottom: 16px;"> </p>
 <p style="margin: 0;">Cheers,<br/>InDome</p>
 </div>
@@ -286,7 +286,7 @@ const handler = withAuthentication(async (req: NextApiRequest, res: NextApiRespo
   const googleClient = new GoogleClient();
   await googleClient.sendMail({
     to: order.email,
-    subject: 'Payment Confirmation - InDome 2023 - Euphoria',
+    subject: `Payment Confirmation - ${eventName}`,
     body: getMailBody(order.toJSON()),
   });
 

@@ -122,7 +122,7 @@ const getMailBody = async (order: IOrder) => {
     <table border="0" cellpadding="0" cellspacing="0" class="heading_block block-3" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;" width="100%">
     <tr>
     <td class="pad" style="width:100%;text-align:center;">
-    <h2 style="margin: 0; color: #555555; font-size: 18px; font-family: Arial, Helvetica Neue, Helvetica, sans-serif; line-height: 120%; text-align: center; direction: ltr; font-weight: 700; letter-spacing: normal; margin-top: 0; margin-bottom: 0;"><span class="tinyMce-placeholder">InDome 2023 - Euphoria</span></h2>
+    <h2 style="margin: 0; color: #555555; font-size: 18px; font-family: Arial, Helvetica Neue, Helvetica, sans-serif; line-height: 120%; text-align: center; direction: ltr; font-weight: 700; letter-spacing: normal; margin-top: 0; margin-bottom: 0;"><span class="tinyMce-placeholder">${eventName}</span></h2>
     </td>
     </tr>
     </table>
@@ -272,7 +272,7 @@ const handler = withAuthentication(async (req: NextApiRequest, res: NextApiRespo
   const googleClient = new GoogleClient();
   await googleClient.sendMail({
     to: order.email,
-    subject: 'InDome 2023 - Euphoria - Ticket Confirmation',
+    subject: `${eventName} - Ticket Confirmation`,
     body: html,
   });
   res.status(200).json({ message: "OK" });

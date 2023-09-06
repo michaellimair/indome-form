@@ -5,6 +5,7 @@ import { IWaitlist } from "../global";
 import { createWaitlist } from "../utils/order";
 import validator from 'validator';
 import { Button, TextInput } from "flowbite-react";
+import { eventName } from "../constants";
 
 export const WaitlistForm: FC = () => {
   const { handleSubmit, control } = useForm<Omit<IWaitlist, '_id'>>({
@@ -26,7 +27,7 @@ export const WaitlistForm: FC = () => {
 
   return (
     <>
-      <p className="text-center font-bold mt-3">We are sorry, there are no more online tickets for InDome 2023 - Euphoria.</p>
+      <p className="text-center font-bold mt-3">We are sorry, there are no more online tickets for {eventName}.</p>
       <p className="text-center mt-2">However, drop your contact below and we will notify you if we release more tickets in the future!</p>
       {!createWaitlistMutation.isSuccess ? (
         <form className="w-full mt-4" onSubmit={handleSubmit(onSubmit)}>

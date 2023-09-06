@@ -4,8 +4,9 @@ export const venueLink = "https://goo.gl/maps/fNgrFAmj7j4bCeWW6";
 export const venueAddress = "29 Lan Kwai Fong, 29 Wyndham Street, Central";
 export const venueName = "Hold On";
 export const eventDate = "Saturday, 30 September 2023";
-export const eventTime = "9:30 pm - 3:30 am";
-export const bannerUrl = "https://indome23.michaellimair.me/lunar-fiesta-banner.png";
+export const eventTime = "9:30 pm - 3 am";
+export const domain = "https://indome23.michaellimair.me"
+export const bannerUrl = `${domain}/lunar-fiesta-banner-v2.png`;
 
 export enum AccountInfoType {
   MOBILE_NUMBER,
