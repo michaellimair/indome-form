@@ -60,7 +60,7 @@ export const eventSalesOpenTime = new Date("2023-08-06T18:00:00+08:00");
 export const eventSalesCloseTime = new Date("2023-09-29T23:59:59+08:00");
 
 const earlyBirdCloseTime = new Date("2023-09-11T22:59:59+08:00");
-const mainReleaseOpenTime = new Date("2023-09-13T18:00:00+08:00");
+const mainReleaseOpenTime = new Date("2023-09-15T12:00:00+08:00");
 
 export const ticketTiers: TicketTierInfo[] = [
   {
