@@ -40,11 +40,11 @@ const AdminOrdersPage: NextPage = () => {
   return (
     <div className="py-3 max-w-7xl mx-auto">
       <Head>
-        <title>InDome 2023 Admin Page</title>
+        <title>InDome Admin Page</title>
         <link rel="icon" href="/favicon.ico" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
       </Head>
-      <h1>{eventName}</h1>
+      <h1 className="px-3 text-3xl font-bold text-center">{eventName}</h1>
       <TokenInput onChange={(t) => {
         setToken(t);
         refetch();
