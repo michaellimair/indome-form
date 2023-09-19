@@ -115,7 +115,7 @@ export const OrderTable: FC<{ orders: IOrder[]; token: string; onConfirm: () => 
           <p>Sending ticket email {progress}/{orders.length}</p>
         </div>
       )}
-      <Table>
+      <Table className="overflow-x-scroll">
         <Table.Head>
           <Table.HeadCell>
             No
@@ -124,13 +124,7 @@ export const OrderTable: FC<{ orders: IOrder[]; token: string; onConfirm: () => 
             Name
           </Table.HeadCell>
           <Table.HeadCell>
-            Phone
-          </Table.HeadCell>
-          <Table.HeadCell>
-            Email
-          </Table.HeadCell>
-          <Table.HeadCell>
-            Tier
+            Contact
           </Table.HeadCell>
           <Table.HeadCell>
             Price
@@ -167,13 +161,9 @@ export const OrderTable: FC<{ orders: IOrder[]; token: string; onConfirm: () => 
                 {order.name}
               </Table.Cell>
               <Table.Cell className="dark:text-white">
-                {order.phone} {!!order.phone && (<ExternalLink target="_blank" rel="noopener noreferrer" href={`https://wa.me/${order.phone.replace('+', '')}`}>WhatsApp</ExternalLink>)}
-              </Table.Cell>
-              <Table.Cell className="dark:text-white">
                 {!!order.email && <ExternalLink target="_blank" rel="noopener noreferrer" href={`mailto:${order.email}`}>{order.email}</ExternalLink>}
-              </Table.Cell>
-              <Table.Cell className="dark:text-white">
-                {getTitleForTier(order.tier)}
+                <br />
+                {order.phone} {!!order.phone && (<ExternalLink target="_blank" rel="noopener noreferrer" href={`https://wa.me/${order.phone.replace('+', '')}`}>WhatsApp</ExternalLink>)}
               </Table.Cell>
               <Table.Cell className="dark:text-white">
                 HKD {(order.price / 100).toFixed(0)}
