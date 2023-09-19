@@ -2,13 +2,28 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { Spinner } from "flowbite-react";
 import { NextPage } from "next";
-import { useState } from "react";
+import { FC, useState } from "react";
 import { OrderTable } from "../../components/OrderTable";
 import { TokenInput } from "../../components/TokenInput";
 import { IOrder } from "../../global";
 import { formatCurrency } from "../../utils/currency";
 import Head from 'next/head';
 import { eventName } from "../../constants";
+
+const OrderStatistics: FC<{ orders: IOrder[] }> = ({
+  orders
+}) => {
+  return (
+    <>
+      <p className="font-bold text-right text-xl">
+        Total Orders: {orders.length}
+      </p>
+      <p className="mt-2 font-bold text-right text-xl">
+        Total Revenue: {formatCurrency(orders.reduce<number>((acc, order) => acc + order.price / 100, 0))}
+      </p>
+    </>
+  )
+}
 
 const AdminOrdersPage: NextPage = () => {
   const [token, setToken] = useState<string>();
@@ -51,37 +66,54 @@ const AdminOrdersPage: NextPage = () => {
         refetchPending();
       }} />
       <p className="p-3">If you are not able to open the image from the table below, please click the "Set Authentication Token" button above again.</p>
-      <h2 className="font-bold mt-2 ml-3">Completed Orders</h2>
-      <div className="p-3 text-center">
-        {!isFetching && orders && (
-          <OrderTable orders={orders} onConfirm={() => refetch()} token={token!} />
-        )}
-        {isFetching && (
-          <Spinner />
-        )}
-        {!isFetching && isError && (
-          <p className="text-center text-red-600 font-bold">Unable to fetch list of orders!</p>
-        )}
-        {!isFetching && orders && (
-          <p className="mt-2 font-bold text-right text-xl">Total Revenue: {formatCurrency(orders.reduce<number>((acc, order) => acc + order.price / 100, 0))}</p>
-        )}
-      </div>
-      <h2 className="font-bold mt-2 ml-3">Pending Orders</h2>
-      <p className="px-3">Pending orders are orders which are not expired (the user is still filling in the form). A price tier (first release, second release, etc.) is assigned to an order when it is created.</p>
-      <div className="p-3 text-center">
-        {!isFetchingPendingOrders && !!pendingOrders?.length && (
-          <OrderTable orders={pendingOrders} onConfirm={() => refetch()} token={token!} />
-        )}
-        {!isFetchingPendingOrders && pendingOrders && !pendingOrders.length && (
-          <p className="text-center font-bold">There are no pending orders</p>
-        )}
-        {isFetchingPendingOrders && (
-          <Spinner />
-        )}
-        {!isFetchingPendingOrders && isPendingOrdersError && (
-          <p className="text-center text-red-600 font-bold">Unable to fetch list of pending orders!</p>
-        )}
-      </div>
+      {token && (
+        <>
+          <h2 className="font-bold mt-2 ml-3">Order Statistics</h2>
+          <div className="p-3 text-center">
+            {isFetching && (
+              <Spinner />
+            )}
+            {!isFetching && orders && (
+              <OrderStatistics orders={orders} />
+            )}
+            {!isFetching && isError && (
+              <p className="text-center text-red-600 font-bold">Unable to fetch order statistics!</p>
+            )}
+          </div>
+          <h2 className="font-bold mt-2 ml-3">Completed Orders</h2>
+          <div className="p-3 text-center">
+            {isFetching && (
+              <Spinner />
+            )}
+            {!isFetching && orders && (
+              <OrderTable orders={orders} onConfirm={() => refetch()} token={token!} />
+            )}
+            {isFetching && (
+              <Spinner />
+            )}
+            {!isFetching && isError && (
+              <p className="text-center text-red-600 font-bold">Unable to fetch list of orders!</p>
+            )}
+          </div>
+          <h2 className="font-bold mt-2 ml-3">Pending Orders</h2>
+          <p className="px-3">Pending orders are orders which are not expired (the user is still filling in the form).</p>
+          <p className="px-3">A price tier (first release, second release, etc.) is assigned to an order when it is created.</p>
+          <div className="p-3 text-center">
+            {!isFetchingPendingOrders && !!pendingOrders?.length && (
+              <OrderTable orders={pendingOrders} onConfirm={() => refetch()} token={token!} />
+            )}
+            {!isFetchingPendingOrders && pendingOrders && !pendingOrders.length && (
+              <p className="text-center font-bold">There are no pending orders</p>
+            )}
+            {isFetchingPendingOrders && (
+              <Spinner />
+            )}
+            {!isFetchingPendingOrders && isPendingOrdersError && (
+              <p className="text-center text-red-600 font-bold">Unable to fetch list of pending orders!</p>
+            )}
+          </div>
+        </>
+      )}
     </div>
   );
 }

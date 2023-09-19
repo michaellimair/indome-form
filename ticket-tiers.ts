@@ -89,6 +89,9 @@ export const ticketTiers: TicketTierInfo[] = [
   },
 ];
 
+const tierTitleMap = new Map(ticketTiers.map((t) => [t.tier, t.title]));
+export const getTitleForTier = (tier: TicketTier) => tierTitleMap.get(tier);
+
 /**
  * Total number of available tickets.
  */

@@ -6,6 +6,7 @@ import { paymentMethods } from "../constants";
 import { IOrder } from "../global";
 import { exportOrdersToExcel } from "../utils/excel";
 import { ExternalLink } from "./ExternalLink";
+import { getTitleForTier } from "../ticket-tiers";
 
 export const OrderTable: FC<{ orders: IOrder[]; token: string; onConfirm: () => void }> = ({ orders, token, onConfirm }) => {
   const [mutatingList, setMutatingList] = useState<Set<string>>(new Set<string>());
@@ -129,6 +130,9 @@ export const OrderTable: FC<{ orders: IOrder[]; token: string; onConfirm: () => 
             Email
           </Table.HeadCell>
           <Table.HeadCell>
+            Tier
+          </Table.HeadCell>
+          <Table.HeadCell>
             Price
           </Table.HeadCell>
           <Table.HeadCell>
@@ -167,6 +171,9 @@ export const OrderTable: FC<{ orders: IOrder[]; token: string; onConfirm: () => 
               </Table.Cell>
               <Table.Cell className="dark:text-white">
                 {!!order.email && <ExternalLink target="_blank" rel="noopener noreferrer" href={`mailto:${order.email}`}>{order.email}</ExternalLink>}
+              </Table.Cell>
+              <Table.Cell className="dark:text-white">
+                {getTitleForTier(order.tier)}
               </Table.Cell>
               <Table.Cell className="dark:text-white">
                 HKD {(order.price / 100).toFixed(0)}
