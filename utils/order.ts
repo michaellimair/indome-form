@@ -1,5 +1,5 @@
 import axios from "axios";
-import { IEventForm, IOrder, IWaitlist } from "../global";
+import { IEventForm, IOrder } from "../global";
 
 export const createOrder = async (): Promise<Pick<IOrder, '_id' | 'expiresAt'>> => {
   const result = await axios.post<Pick<IOrder, '_id' | 'expiresAt'>>('/api/orders');
@@ -15,10 +15,4 @@ export const updateOrder = async (orderId: string, form: IEventForm) => {
 
 export const cancelOrder = async (orderId: string) => {
   await axios.delete(`/api/orders/${orderId}`);
-}
-
-export const createWaitlist = async (input: Omit<IWaitlist, '_id'>): Promise<IWaitlist> => {
-  const result = await axios.post<IWaitlist>('/api/waitlist', input);
-
-  return result.data;
 }
