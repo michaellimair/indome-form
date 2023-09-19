@@ -15,10 +15,10 @@ const OrderStatistics: FC<{ orders: IOrder[] }> = ({
 }) => {
   return (
     <>
-      <p className="font-bold text-right text-xl">
+      <p className="font-bold text-xl">
         Total Orders: {orders.length}
       </p>
-      <p className="mt-2 font-bold text-right text-xl">
+      <p className="mt-2 font-bold text-xl">
         Total Revenue: {formatCurrency(orders.reduce<number>((acc, order) => acc + order.price / 100, 0))}
       </p>
     </>
@@ -87,9 +87,6 @@ const AdminOrdersPage: NextPage = () => {
             )}
             {!isFetching && orders && (
               <OrderTable orders={orders} onConfirm={() => refetch()} token={token!} />
-            )}
-            {isFetching && (
-              <Spinner />
             )}
             {!isFetching && isError && (
               <p className="text-center text-red-600 font-bold">Unable to fetch list of orders!</p>
