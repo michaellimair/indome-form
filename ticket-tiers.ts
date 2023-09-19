@@ -96,6 +96,9 @@ export const totalQuota = ticketTiers.reduce((acc, { quota }) => acc + quota, 0)
 
 export const getEventTierInfo = async () => {
   const currentDateTime = new Date();
+  // Dynamic import to prevent class from being imported in the client side
+  const { default: Order } = await import("./models/Order");
+
   const tierInfo = await Promise.all<EventTierInfo>(ticketTiers.map(async ({
     price,
     title,
@@ -110,8 +113,6 @@ export const getEventTierInfo = async () => {
     let available = isInWindow;
     let pendingAvailable = isInWindow;
     if (isInWindow) {
-      // Dynamic import to prevent class from being imported in the client side
-      const { default: Order } = await import("./models/Order");
       const completedTickets = await Order.countDocuments({
         filled: true,
         tier,
